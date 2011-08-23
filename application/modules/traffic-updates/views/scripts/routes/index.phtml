@@ -1,0 +1,40 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Routes</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>
+<div class="content">
+<h1>All routes</h1>
+<?php if ($this->subscribed): ?>
+<p class="ok">Subscription to <?php echo $this->name ? '<b>' . $this->escape($this->name) . '</b>' : 'route' ?> successful</p>
+<?php endif; if ($this->already): ?>
+<p class="errors">You are already subscribed to <?php echo $this->name ? '<b>' . $this->escape($this->name) . '</b>' : 'that route' ?>!</p>
+<?php endif; if ($this->error): ?>
+<p class="errors">An error occurred. Please try again.</p>
+<?php endif; if ($this->routes): ?>
+<table class="vertical-image">
+<?php foreach($this->routes as $route): $subscribers = $route['subscribers']; $route = $route['route'] ?>
+<tr><th><img alt="<?php echo $this->escape($route->getOwnerName())?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $route->getOwnerId()), null, true) ?>" /></th><td><h1><?php echo $this->escape($route->getName()) ?></h1><p>By <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $route->getOwnerId())) ?>"><?php echo $this->escape($route->getOwnerName()) ?></a></p></td>
+<tr><td class="entry" colspan="2"><?php echo $route->getDescription() ? $this->escape($route->getDescription()) : '' ?><p class="meta">Created: <span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($route->getCreatedAt()))  ?></span>, Last updated: <span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($route->getUpdatedAt()))  ?></span></p><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'subscribe', 'id' => $route->getId(), 'name' => $route->getName()), null, true) ?>"><img alt="Subscribe" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'subscribers', 'id' => $route->getId(), 'name' => $route->getName()), null, true) ?>"><img alt="Subscribers" src="<?php echo $this->baseUrl('/styles/icons/16/users.png') ?>" /><span class="meta">(<?php echo number_format($subscribers) ?>)</span></a></td></tr>
+<?php endforeach ?>
+</table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'routes')) ?>
+<div class="tips"><p>When you subscribe to a route, it's most recent update will be shown on your <a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">subscribed routes</a> view.</p><p><img alt="subscribe" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /> - Subscribe<img alt="subscribers" src="<?php echo $this->baseUrl('/styles/icons/16/users.png') ?>" /> - View subscribers</p></div>
+<?php else: if ($this->searchTerm): ?>
+<p class="errors">No routes by the name '<?php echo $this->searchTerm ?>' exist</p>
+<?php else: ?>
+<p class="ok">No routes have been created yet.</p>
+<p><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'new')) ?>">Click here</a> to create your own route.</p>
+<?php endif; endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>

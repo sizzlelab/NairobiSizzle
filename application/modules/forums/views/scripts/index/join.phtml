@@ -1,0 +1,4 @@
+<ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li></ul>
+<div class="content"><?php if(isset ($this->error)) { ?><p class="errors"><?php echo $this->error; ?></p><?php } ?><?php if(isset ($this->msg)) { ?><p class="ok"><?php echo $this->msg; ?></p><?php } ?></div>

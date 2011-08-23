@@ -1,0 +1,22 @@
+<?php include 'menu.phtml';?><html>
+    <div class="description">   <h3>Welcome to Experiences Home Page:</h3><p>
+            Select by clicking on <b><i>Share an Experience Link</i></b> To share Your experiences with others<br><b>OR</b><br>
+            <b><i>Check shared Experiences </i></b> to get enlightened depending on Your Interests, course or current level status.</div>
+</html><body text="green" bgcolor="white">
+    <br><p><a class ="content" href="<?php
+echo $this->url(
+        array(
+            'controller' => 'exps',
+            'action' => 'experiences'
+        ),
+        'campuswisdom',
+        true)
+?>">Share an experience</a> <br><p><a class="content" href="<?php
+echo $this->url(
+        array(
+            'controller' => 'experiences',
+            'action' => 'getexperiences'
+        ),
+        'campuswisdom',
+        true)
+?>">Check shared Experiences</a><br     />

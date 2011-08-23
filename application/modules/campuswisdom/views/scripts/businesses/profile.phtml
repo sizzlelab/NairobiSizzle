@@ -1,0 +1,107 @@
+<style type="text/css">
+	.nav li {width: 33%;}
+	.bottom-nav li {width: 33%}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+    <li><a class="active" href="<?php echo $this->url(array('controller'=>'index', 'action'=>'bizads')) ?>">Business</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">All</a></li>
+</ul>
+<ul class="nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'businesses','action'=>'categorized')) ?>">Category</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<?php if(!empty($this->msg)):?>
+	<div class="ok">
+		<?php echo $this->msg;?>
+	</div>
+<?php endif;?>
+<h1 align="center">business profile</h1>
+	<?php if(!empty($this->business)): ?>
+		<table class="vertical-image">
+		<tr><th><img alt="<?php echo $this->business['name']."'s logo"?>" class="framed" src="<?php echo $this->baseUrl('/uploads/business/'.$this->business['logo']) ?>" /><br />
+            <?php if($this->user_id == $this->business['added_by_id']):?>
+            	<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads','action'=>'changelogo','bizid'=>$this->business['id']), null, true)?>""><img align="right" alt="edit logo" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a>
+            <?php endif;?>         
+          	</th>
+            <td><b><?php echo $this->business['name']?></b> 
+            <?php if($this->user_id == $this->business['added_by_id']):?>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads','action'=>'editprofile','bizid'=>$this->business['id']), null, true)?>"><img alt="edit business" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a>
+			<?php endif;?>           
+	       	<p><b class="meta">location: </b><?php echo $this->business['location']?></p>
+	      	<p><b class="meta">email: </b><?php echo $this->business['email']?></p>
+	      	<p><b class="meta">mobile: </b><?php echo $this->business['mobile']?></p>
+	      	<p><b class="meta">landline: </b><?php echo $this->business['landline']?></p>
+	      	<p><b class="meta">address: </b><?php echo $this->business['address']?></p>
+	      	<p><b class="meta">description: </b><?php echo $this->business['description']?></p>
+	      	<span class="meta"><b>category: </b><a href="<?php echo $this->url(array('controller'=>'businesses', 'action'=>'categorized', 'catid'=>$this->business['category_id']))?>"><?php echo $this->category ?></a></span>
+	      	<br /><span class="meta"><b>added by: </b><a href="<?php echo $this->url(array('module'=>'default', 'controller'=>'person', 'action'=>'view-contact-info', 'id'=>$this->user_id))?>"><?php echo $this->owner ?></a></span>
+            </td>
+        </tr>
+		</table>
+		<!-- To display an array of images here -->
+		<h2 align="center">images
+		<?php if($this->user_id == $this->business['added_by_id']):?>
+			<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads','action'=>'addimage','bizid'=>$this->business['id']), null, true)?>"><img alt="upload image" src="<?php echo $this->baseUrl('/styles/icons/16/up.png') ?>" /></a>
+		<?php endif;?></h2>
+		<?php if(!empty($this->biz_images)){?>
+			<table><tr>
+				<?php foreach ($this->biz_images as $biz_images):?>
+					<td><img alt="img" height="48px" src="<?php echo $this->baseUrl('/uploads/business/'.$biz_images['url']) ?>" width="48px" /></td>
+				<?php endforeach;?></tr>
+			</table>
+			<?php echo $this->biz_images; ?>
+		<?php }else {?>
+			<div class="errors">No images uploaded</div>
+		<?php }?>
+		<h2 align="center">products and services<?php if($this->user_id == $this->business['added_by_id']):?>
+			<a href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads','action'=>'addbizproduct','bizid'=>$this->business['id']), null, true)?>""><img align="right" alt="add product" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /></a>
+		<?php endif;?></h2>
+		<?php if(!empty($this->products)){?>
+		<table class="vertical-image">
+		<?php foreach($this->products as $product):?>
+			<tr>
+            <th><img alt="<?php echo $product['name']."'s image"?>" class="framed"
+                     src="<?php echo $this->baseUrl('/uploads/products/'.$product['url']) ?>" />
+            <?php if($this->user_id == $this->business['added_by_id']):?>
+            <a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads','action'=>'productimage','pdtid'=>$product['id'],'bizid'=>$this->business['id']), null, true)?>""><img align="right" alt="edit image" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a>
+	    <?php endif ?>
+            </th>
+            <td><b><?php echo $product['name']?></b>
+            <?php if($this->user_id == $this->business['added_by_id']):?>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads','action'=>'editproduct','pdtid'=>$product['id']), null, true)?>""><img align="right" alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a>
+			<?php endif;?>
+	       	<p><b class="meta">description: </b><?php echo $product['description']?></p>
+	      	<p><b class="meta">price in shs: </b><?php echo $product['price']?></p>
+	      	<span class="meta"><a href="<?php echo $this->url(array('controller'=>'businesses', 'action'=>'viewproducts','catid'=>$product['category_id']))?>"><?php echo $this->cat->getName($product['category_id']) ?></a></span>
+            </td>
+        	</tr>
+        <?php endforeach; ?>
+        </table>
+        <?php echo $this->products;?>
+		<?php }else {?>
+			<div class="errors">No products added</div>
+		<?php }?>
+	<?php endif;?>
+</div>
+<div align="center" class="tips">
+	<p>You can view all products offered <span class="meta"><a href="<?php echo $this->url(array('controller'=>'businesses', 'action'=>'viewproducts'))?>">here</a></span></p>
+	<?php if($this->user_id == $this->business['added_by_id']):?>
+		<p>To add a product click (<img alt="add" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" />)</p>
+		<p>To upload an image/video click (<img alt="add" src="<?php echo $this->baseUrl('/styles/icons/16/up.png') ?>" />)</p>
+		<p>To edit this business profile click (<img alt="edit profile" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" />) next to business name</p>
+		<p>To edit a product click (<img alt="edit product" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" />) next to product</p>
+	<?php endif;?>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>	
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</ul>

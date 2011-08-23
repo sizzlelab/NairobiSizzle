@@ -1,0 +1,48 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<?php if ($this->person): $person = $this->person ?>
+<h1>Contact Info<span class="right"><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'contact-info', 'id' => $this->person ? $this->person->id : ''), null, true) ?>"><img alt="Preview" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></span></h1>
+<?php if ($this->updated): ?>
+<p class="ok">Profile updated</p>
+<?php endif ?>
+<?php if ($this->errors): ?>
+<ul class="errors">
+<?php foreach($this->errors as $error): ?>
+<li><?php echo $error ?></li>
+<?php endforeach ?>
+</ul>
+<?php endif ?>
+<table class="vertical">
+<tr><th>Current location:</th><td><?php echo $person->location ? $person->location->label ? $this->escape($person->location->label) : 'Not set' : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-location'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->location && $person->location->label): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-location', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>Phone:</th><td><?php echo $person->phone_number ? $this->escape($person->phone_number) : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-phone-number'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->phone_number): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-phone-number', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>Postal Address:</th><td><?php echo $person->address ? trim($person->address->unstructured) ? $this->escape($person->address->unstructured) : 'Not set' : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-address'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->address && trim($person->address->unstructured)): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-address', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>Facebook Profile:</th><td><?php echo $person->irc_nick ? '<a href="http://www.facebook.com/' . $person->msn_nick . '">' . 'http://www.facebook.com/' . $person->msn_nick . '</a>' : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-msn-nick'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->msn_nick): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-msn-nick', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>Twitter Profile:</th><td><?php echo $person->irc_nick ? '<a href="http://twitter.com/' . $person->irc_nick . '">' . 'http://twitter.com/' . $person->irc_nick . '</a>' : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-irc-nick'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->irc_nick): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-irc-nick', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr><tr>
+<th>Website:</th><td><?php echo $person->website ? '<a href="' . $person->website . '">' . $person->website . '</a>' : 'Not Set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-website'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->website): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-website', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+</table>
+<div class="tips"><p>Last updated: <?php echo $this->escape(Application_Model_Date::relativeTime($person->updated_at)) ?></p><p><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /> - Edit a field <img alt="delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Clear a field <img alt="preview" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> - Preview</p></div>
+<?php else: ?>
+<p class="errors">An error occurred and your profile could not be retrieved. Please try again later.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+</ul>

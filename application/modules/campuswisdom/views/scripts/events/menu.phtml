@@ -1,0 +1,11 @@
+<ul class="tabs">
+    <li><a href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url() ?>">Events</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Logout</a></li>
+</ul>
+<div class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">All</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">Create</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">Subscribe</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">Search</a></li>
+</div>

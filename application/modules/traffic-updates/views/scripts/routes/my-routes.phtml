@@ -1,0 +1,38 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Routes</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>
+<div class="content">
+<h1>My Routes</h1><a class="button" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'new'), null, true) ?>">New</a>
+<?php if ($this->created): ?>
+<p class="ok">Route created</p>
+<?php endif; if ($this->deleted): ?>
+<p class="ok">Route deleted</p>
+<?php endif; if ($this->updated): ?>
+<p class="ok">Route information updated</p>
+<?php endif; if ($this->routes): ?>
+<table class="vertical-image">
+<?php foreach($this->routes as $route): $subscribers = $route['subscribers']; $route = $route['route'] ?>
+<tr><td colspan="2"><h2><?php echo $this->escape($route->getName()) ?></h2></td>
+<tr><td class="entry" colspan="2"><?php echo $route->getDescription() ? $this->escape($route->getDescription()) : '' ?><p class="meta">Created: <span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($route->getCreatedAt()))  ?></span>, Last updated: <span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($route->getUpdatedAt()))  ?></span></p><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'subscribers', 'id' => $route->getId()), null, true) ?>"><img alt="Subscribers" src="<?php echo $this->baseUrl('/styles/icons/16/users.png') ?>" /><span class="meta">(<?php echo number_format($subscribers) ?>)</span></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'updates', 'id' => $route->getId()), null, true) ?>"><img alt="Updates" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'edit', 'id' => $route->getId()), null, true) ?>"><img alt="Edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'confirm-delete', 'id' => $route->getId(), 'name' => $route->getName(), 'subs' => $subscribers), null, true) ?>"><img alt="Delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /></a></td></tr>
+<?php endforeach ?>
+</table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'routes')) ?>
+<div class="tips"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /> - Edit route<img alt="delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Delete route<img alt="subscribers" src="<?php echo $this->baseUrl('/styles/icons/16/users.png') ?>" /> - View subscribers<img alt="updates" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> - View updates</div>
+<?php else: ?>
+<p class="ok">You haven't created any routes.</p>
+<p><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'new'), null, true) ?>">Create a route</a></p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>

@@ -1,0 +1,32 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li, .bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'addevent')) ?>">Create</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'index')) ?>">Groups</a></li>
+</div>
+<div class="content">
+    <h1 style='margin-left: 20%;'><img alt="" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /><?php echo$this->title; ?></h1>
+    <?php
+        if(isset($this->message))
+        {
+            echo "<div class='errors'>".$this->message."div";
+        }
+        if(isset($this->form))
+        {
+            echo $this->form;
+        }
+    ?>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+</ul>

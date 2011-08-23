@@ -1,0 +1,33 @@
+ <style type="text/css">
+    /*override global nav settings*/
+    .nav li, .bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('module'=>'Yearbook','controller' => 'index', 'action' => 'index')) ?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+</ul>
+<ul class="nav">
+    <li><a class="active" href="<?php echo $this->url(array(  'action' => 'index')) ?>">Class</a></li>
+     <li><a href="<?php echo $this->url(array(  'action' => 'list')) ?>">Classes</a></li>
+     <li><a href="<?php echo $this->url(array(  'action' => 'jobsmenu')) ?>">Jobs</a></li>
+</ul>
+<div class="content">
+    <?php if ($this->course): ?>
+    <h1><?php echo $this->course['course'] ?>, <?php echo $this->course['year'] ?></h1>
+    <?php endif; if ($this->people) { ?>
+    <table class="vertical-image">
+        <?php foreach($this->people as $person):?>
+<tr><th><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></th><td><b><?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?></b><?php echo $person->status ? $person->status->message ? strlen($person->status->message) > 50 ? '<p>' . $this->escape(substr($person->status->message, 0, 50) . '...') . '</p>' : '<p>' . $this->escape($person->status->message) . '</p>' : '' : '' ?><div><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'view-full-info', 'id' => $person->id), null, true) ?>"><img alt="Profile" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a><?php if ($person->connection == 'none'): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'add', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>"><img alt="Add friend" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /></a><?php else: ?><span class="meta"><?php echo $person->connection ?></span><?php endif ?></div></td></tr>
+        <?php endforeach ?>
+    </table>
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'classmates')) ?>
+    <?php } elseif ($this->notJoined){ ?>
+    <p class="errors">You haven't registered your course information yet. To view your classmates, <a href="<?php echo $this->url(array('module'=>'default','controller'=>'person', 'action'=>'course-info'));?>">register your course information</a>, or use the form below to view members of other classes.</p>
+    <?php if($this->form) echo $this->form; } ?>
+</div>
+<ul class="bottom-nav">
+	<li><a class="active" href="<?php echo $this->url(array(  'action' => 'index')) ?>">Class</a></li>
+     <li><a href="<?php echo $this->url(array(  'action' => 'list')) ?>">Classes</a></li>
+     <li><a href="<?php echo $this->url(array(  'action' => 'jobsmenu')) ?>">Jobs</a></li>
+</ul>

@@ -1,0 +1,16 @@
+<ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><?php if($this->role == 1) : ?><style type="text/css">.nav li{width: 25%;}</style><ul class="nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Requests</a></li>
+<li><a class="active" href="">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><style type="text/css">.nav li{width: 33%;}</style><ul class="nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,), 'default', true); ?>">Members</a></li>
+<li><a class="active" href="">Notify</a></li></ul><?php endif; ?><div class="content"><div id="logo"><center><img alt="SMS Notification" src="<?php echo $this->baseUrl('/styles/icons/forums/sms.png') ?>" />
+<h1>SMS Notification</h1></center> </div><br/><br/><br/>
+<?php if(!is_null ($this->error)) {?> <p class="errors"><?php echo $this->error; ?></p><?php } ?> <?php if(!is_null ($this->response)) {?> <p class="ok"><?php echo $this->response; ?></p><?php } ?>
+<?php if(!$this->done){if(isset ($this->form)) echo $this->form;} ?></div>
+

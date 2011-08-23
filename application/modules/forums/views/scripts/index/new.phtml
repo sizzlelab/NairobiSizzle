@@ -1,0 +1,14 @@
+<style type="text/css">.nav li{width: 25%;} .bottom-nav li{width: 25%;}</style><ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><ul class="nav"><li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Home</a></li>
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'new','module'=>'forums'), 'default', true); ?>">Create</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'available-groups','module'=>'forums'), 'default', true); ?>">Public</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allgroups','module'=>'forums'), 'default', true); ?>">Search</a></li>
+</ul><div class="content"><br/><br/><div id="logo"><center><img alt="Create New Group" src="<?php echo $this->baseUrl('/styles/icons/forums/new.png') ?>" /><h1>Create a New Group</h1></center></div><br/><br/><br/><br/>
+<?php if(isset ($this->error)){?><p class="errors" > <?php echo $this->error;?></p><?php } ?><?php echo $this->form;?><ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Home</a></li>
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'new','module'=>'forums'), 'default', true); ?>">Create</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'available-groups','module'=>'forums'), 'default', true); ?>">Public</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allgroups','module'=>'forums'), 'default', true); ?>">Search</a></li></ul></div>

@@ -1,0 +1,22 @@
+<style type="text/css">
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style>
+<?php include 'menu.phtml';?>
+<div class="content">
+<?php
+if (isset($this->error)) {
+?>
+<?php echo $this->error; ?>
+<?php } if (!empty($this->Vform)) { ?>
+<table>
+<?php foreach ($this->Vform as $V):?>
+<tr><td><?php  echo $V['Views']//echo $this->escape($V['Views'])?></td></tr>
+<tr><td> <?php echo $this->action('viewnamecomments', 'exps', 'campuswisdom', array('expid' => $V['ExpId'])) ?></td></tr>
+<?php endforeach; ?>
+       </table>
+<?php } ?></div>
+<div class="bottom-nav">
+<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'exps','action'=>'index')) ?>">Experiences</a></li>
+<li><a>Maps</a></li></div>

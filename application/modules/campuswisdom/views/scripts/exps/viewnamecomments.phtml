@@ -1,0 +1,19 @@
+<?php //include 'menu.phtml';?>
+<div class="content">
+   <img  alt="Campus Life" class="framed" height="24" src="<?php echo $this->baseUrl('/styles/icons/16/Campus.png')?>" width="24"/>
+<span style="display: inline-block;width:auto"><h1>Comments</h1></span>
+<?php
+if (isset($this->msg)) {
+    /* Display Successiful processes */
+?> <ul class="ok"><li><?php echo $this->msg;
+} ?></li></ul><div class="content"><ul>
+        <?php
+        ($this->result);
+        if ($this->count <= 5) {
+            foreach ($this->result as $result):        ?>
+        <?php /*Displays comments when less than five Else a link for the remaining comments*/?>
+                <li><?php echo $result['Comment']; ?></li>
+    <?php endforeach; ?></ul>
+<?php } else {
+?>                <a class="icon" href="<?php echo $this->url(array('action' => 'viewcomments', 'controller' => 'Exps', 'expid' => $this->result[0]['ExpId'])) ?>"><img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png')?>" /></a>
+<?php } ?>  <a class="icon" href="<?php echo $this->url(array('controller' => 'exps', 'action' => 'comment', 'expid' => $this->result[0]['ExpId'])) ?>"><img alt="Comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /></a></div></div>

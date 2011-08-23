@@ -1,0 +1,33 @@
+<style type="text/css">
+	.bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+	<li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login', 'action'=>'index')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+</ul>
+<div class="content">
+<?php if(!empty($this->error)):?>
+	<div class="errors">
+		<?php echo $this->error; ?>
+	</div>
+<?php endif;?>
+<?php if(!empty($this->msg)):?>
+	<div class="ok">
+		<?php echo $this->msg; ?>
+	</div>
+<?php endif;?>
+	<h2 align="center" class="errors">Account status: blocked</h2>
+	<p align="center">You exceeded the number of login attempts and your account has been deactivated</p>
+	<p align="center">To reactivate your account, click <a href="<?php echo $this->url(array('module'=>'default', 'controller'=>'login', 'action'=>'reinstate', 'username'=>$this->username)) ?>">here</a></p>
+	<p align="center">If you have forgotten your password, click <a href="<?php echo $this->url(array('controller'=>'login', 'action'=>'recoverpassword')) ?>">here</a></p>
+</div>
+<div align="center" class="tips">
+	<p><a href="<?php echo $this->url(array('module'=>'default', 'controller'=>'login', 'action'=>'reinstate', 'username'=>$this->username), false, true) ?>">Reactivate</a> my account</p>
+	<p>Forgot your password? Click <a href="<?php echo $this->url(array('controller'=>'login', 'action'=>'recoverpassword')) ?>">Here</a></p>
+</div>	
+<ul class="bottom-nav">
+    <li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login', 'action'=>'index')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+</ul>

@@ -1,0 +1,23 @@
+<style type="text/css">
+    .bottom-nav li{width: 33%;}
+</style>
+<?php include 'menu.phtml';?>
+<div class="content">
+    <img  alt="Campus Life" class="framed" height="24" src="<?php echo $this->baseUrl('/styles/icons/16/Campus.png')?>" width="24"/>
+<span style="display: inline-block;width:auto"><h1>Comments</h1></span>
+<?php if (isset($this->msg)) { ?> <div class="ok"><?php echo $this->msg; } ?></div><ul>
+     <?php if (isset ($this->error)){ ?>
+    <ul class="errors"><li><?php echo $this->error; }?></li> </ul>
+
+        <?php if(isset ($this->result)) {
+        foreach ($this->result as $result):?>
+                <li> <?php /* displays all comments under that experience */
+            echo $result['Comment']; ?></li><?php endforeach; }?></ul>
+    <?php echo $this->result;
+        //var_dump($this->result);exit;?>
+    <a class="icon" href="<?php echo $this->url(array('controller' => 'exps', 'action' => 'comment',
+        'module' => 'campuswisdom', 'expid' =>$this->result1)) ?>"><img alt="Comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /></a></div>
+<div class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'exps','action'=>'index')) ?>">Experiences</a></li>
+	<li><a>Maps</a></li></div>

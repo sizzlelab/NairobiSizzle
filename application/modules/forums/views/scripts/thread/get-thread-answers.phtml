@@ -1,0 +1,18 @@
+<style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;} </style><ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller' => 'index', 'action' => 'index', 'module' => 'forums'), 'default', true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li></ul>
+<ul class="nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-group-threads','module'=>'forums'),null,true) ?>">Group</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li></ul>
+<?php //var_dump($this->answers);
+if($this->answers && $this->notEmpty){foreach($this->answers['entry'] as $answer):?>
+<p style="margin:30px"><a href="<?php echo $this->url(array('controller'=>'thread',
+'action'=>'get-thread-details', 'id'=>$answer['poster_id']));?>"><?php echo $this->escape($answer['poster_name']);?></a><?php echo ' insight : '.$answer['body'];?>
+<?php if($answer['replies']==1){ echo'( '.$this->escape($answer['replies']).' person agrees)';} else {echo '( '.$this->escape($answer['replies']).' people agree)';}?> <a href="<?php echo $this->url(array('controller'=>'thread',
+'action'=>'like-post', 'module'=>'forums','threadlike'=>$answer['id']));?>"><?php echo "Agree";?></a>
+<?php endforeach;?>
+<p><a href="<?php echo $this->url(array('controller'=>'thread',
+'action'=>'answer-thread','qnid'=>$this->answers['entry'][0]['reference_to']));?>"><?php echo "Your take";?></a></p>
+<?php }else if($this->qnid){?><a href="<?php echo $this->url(array('controller'=>'thread',
+'action'=>'answer-thread','qnid'=>$this->qnid));?>"><?php echo $this->title.'<br>';echo "Be the first to answer";?></a><?php } else{?><ul class="error"> <li><?php echo $this->error;}?></li></ul>
+<ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-group-threads','module'=>'forums'),null,true) ?>">Group</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li></ul>

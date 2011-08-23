@@ -1,0 +1,36 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'index'), null, true) ?>">Friends</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'requests'), null, true) ?>">Requests</a></li>
+</ul>
+<div class="content">
+<h1>Friend Requests</h1>
+<?php if ($this->accepted): ?>
+<p class="ok">You are now friends with <b><?php echo $this->accepted ?></b></p>
+<?php endif; if ($this->ignored): ?>
+<p class="ok">You have ingored <b><?php echo $this->ignored ?></b>'s friend request</p>
+<?php endif; if ($this->removed): ?>
+<p class="ok">You have successfully removed <b><?php echo $this->removed ?></b> as a friend</p>
+<?php endif; if ($this->requests): ?>
+<table class="vertical-image">
+<?php foreach($this->requests as $person): ?>
+<tr><th><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id)) ?>"><img alt="<?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></a></th><td><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id)) ?>"><?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?></a><?php echo $person->status ? $person->status->message ? strlen($person->status->message) > 50 ? '<p>' . $this->escape(substr($person->status->message, 0, 50) . '...') . '</p>' : '<p>' . $this->escape($person->status->message) . '</p>' : '' : '' ?><div><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'accept', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>"><img alt="Accept" src="<?php echo $this->baseUrl('/styles/icons/16/user_add.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'ignore', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>"><img alt="Ignore" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /></a></div></td></tr>
+<?php endforeach ?>
+</table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'Requests')) ?>
+<div class="tips"><img alt="Accept request" src="<?php echo $this->baseUrl('/styles/icons/16/user_add.png') ?>" /> - Accept request <img alt="Ignore request" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Ignore request</div>
+<?php else: ?>
+<p class="ok">You do not have any friend requests.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'index'), null, true) ?>">Friends</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'requests'), null, true) ?>">Requests</a></li>
+</ul>

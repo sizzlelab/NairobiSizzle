@@ -1,0 +1,38 @@
+ <style type="text/css">
+    .nav li, .bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url() ?>">Events</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Logout</a></li>
+</ul>
+<div class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li class="active"><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">Create</a></li>
+        <li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">Search</a></li>
+</div>
+<div class="content">
+<?php
+    if(!empty($this->people))
+    {
+         echo '<table class="vertical-image">';
+        foreach($this->people as $person)
+        {
+            ?>
+
+                   <tr><th><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></th><td><b><?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?></b><?php echo $person->status ? $person->status->message ? strlen($person->status->message) > 50 ? '<p>' . $this->escape(substr($person->status->message, 0, 50) . '...') . '</p>' : '<p>' . $this->escape($person->status->message) . '</p>' : '' : '' ?><div><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'view-full-info', 'id' => $person->id), null, true) ?>"><img alt="Profile" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a><?php if ($person->connection == 'none'): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'add', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>"><img alt="Add friend" src="<?php echo $this->baseUrl('/styles/icons/16/user_add.png') ?>" /></a><?php else: ?><span class="meta"><?php echo $person->connection ?></span><?php endif ?></div></td></tr>
+
+<?php
+        }
+        echo '</table>';
+          echo $this->people;
+
+    }
+  ?>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+        <li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+	<li><a>Maps</a></li>
+</ul>

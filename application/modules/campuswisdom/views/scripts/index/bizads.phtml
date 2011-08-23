@@ -1,0 +1,41 @@
+<style type="text/css">
+	.nav li {width: 33%;}
+	.bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<ul class="nav">
+    <li><a class="active" href="<?php echo $this->url() ?>">Business</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>
+</ul>
+<div class="content">
+<h1 align="center">business categories</h1>
+<table class="vertical">
+	<tr>
+	<th>all businesses</th>
+	<td><a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'index', 'action'=>'allbusinesses')) ?>"><img alt="view" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td>
+	</tr>
+	<?php if(!empty($this->categories)):?>
+		<?php foreach ($this->categories as $category):?>
+			<tr>
+				<th><?php echo $category['name'];?></th>
+				<td><a class="icon" href="<?php echo $this->url(array('controller'=>'businesses', 'action'=>'categorized','catid'=>$category['id'])) ?>"><img alt="view" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td>
+			</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+</table>
+<?php echo $this->categories ?>
+</div>
+<div class="tips">
+	<p align="center">Select a category to view businesses in it</p>
+	<p align="center">Select <span class="meta"><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></span> to view your ads or place a business ad</p>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a>Maps</a></li>
+</ul>

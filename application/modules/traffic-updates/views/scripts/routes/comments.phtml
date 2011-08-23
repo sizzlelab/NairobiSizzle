@@ -1,0 +1,38 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index')) ?>">Routes</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index')) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes')) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index')) ?>">All</a></li>
+</ul>
+<div class="content">
+<?php if ($this->route): ?>
+<h1><?php echo $this->escape($this->route->getName()) ?><span style="float:right"><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'comments', 'route' => $this->route->getId(), 'update' => $this->update->getId()), null, true) ?>"><img alt="Refresh" src="<?php echo $this->baseUrl('/styles/icons/16/repeat.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'updates', 'id' => $this->route->getId()), null, true) ?>"><img alt="Updates" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></span></h1>
+<?php endif ?>
+<?php if ($this->errors): ?>
+<ul class="errors"><?php foreach($this->errors as $error): ?><li><?php echo $error ?></li><?php endforeach ?></ul>
+<?php endif; if ($this->commented): ?>
+<p class="ok">Comment posted successfully</p>
+<?php endif; if ($this->deleted): ?>
+<p class="ok">Comment deleted</p>
+<?php endif ?>
+<table class="vertical-image">
+<?php if ($this->update): ?>
+<tr><th><img alt="<?php echo $this->escape($this->update->getPosterName())?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $this->update->getPosterId()), null, true) ?>" /></th><td><?php if ($this->update->getTitle()): ?><b><?php echo $this->escape($this->update->getTitle()) ?></b><?php endif ?><?php if ($this->update->getBody()): ?><p><?php echo $this->escape($this->update->getBody()) ?></p><?php endif ?><p class="meta">By <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $this->update->getPosterId()), null, true) ?>"><?php echo $this->escape($this->update->getPosterName()) ?></a><span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($this->update->getCreatedAt()))  ?></span></p></td></tr>
+<tr><td colspan="2"><h2>Comments</h2></td></tr><?php if ($this->form): ?><tr><td colspan="2"><b>Add a comment</b><?php echo $this->form ?></td></tr>
+<?php endif; endif; if ($this->comments): $i = 0; foreach($this->comments as $comment): ?>
+<tr><th><img alt="<?php echo $this->escape($comment->getPosterName())?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $comment->getPosterId()), null, true) ?>" /></th><td<?php echo ($i++ % 2 == 0) ? ' class="even"' : ''?>><?php if ($comment->getTitle()): ?><b><?php echo $this->escape($comment->getTitle()) ?></b><?php endif; if ($comment->getBody()): ?><p><?php echo $this->escape($comment->getBody()) ?></p><?php endif ?><p class="meta">By <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $comment->getPosterId())) ?>"><?php echo $this->escape($comment->getPosterName()) ?></a><span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($comment->getCreatedAt()))  ?></span></p><?php if ($this->id == $comment->getPosterId()): ?><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'delete-comment', 'route' => $this->route->getId(), 'comment' => $comment->getId()), null, true) ?>"><img alt="Delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /></a><?php endif ?></td></tr>
+<?php endforeach; endif ?>
+</table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'Comments')) ?>
+<div class="tips"><img alt="refresh" src="<?php echo $this->baseUrl('/styles/icons/16/repeat.png') ?>" /> - Refresh <img alt="updates" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> - View all updates <img alt="delete comment" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Delete comment</div>
+</div>
+<ul class="bottom-nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index')) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'mine')) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index')) ?>">All</a></li>
+</ul>

@@ -1,0 +1,50 @@
+<style type="text/css">
+	.nav li{width: 33%;}
+	.bottom-nav li{width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<ul class="nav">
+    <li><a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'bizads')) ?>">Business</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>
+</ul>
+<div class="content">
+	<?php if(isset($this->form)): ?> 
+		<?php echo $this->form;?>
+	<?php endif;?>
+	<?php if(!empty($this->category_name)):?>
+		<h1 align="center"><?php echo $this->category_name ?>: classifieds</h1>
+	<?php endif;?>
+	<?php if(!empty($this->classifieds)){?>
+		<table class="vertical-image">
+		<?php foreach ($this->classifieds as $classified): ?>
+			<tr><th><img alt="<?php echo $this->escape($classified['title'])?>'s image" class="framed" src="<?php echo $this->baseUrl('/uploads/classifieds/'.$classified['image_url'])?>" /></th>
+            <td><b><?php echo $this->escape($classified['title'])?></b>
+                <p><?php echo $classified['location']?></p>
+                <p><?php echo 'kshs '.$classified['price']?></p>
+                <span class="meta"><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'profile','classid'=>$classified['classified_id'])) ?>">details</a></span>
+                <?php if($this->db->onAuction($classified['classified_id'], $this->user_id)):?>
+                	<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'classifieds', 'action'=>'placebid', 'classid'=>$classified['classified_id']), null, true)?>"><img  align="right" alt="bid" class="icon" src="<?php echo $this->baseUrl('/styles/icons/16/add.png')?>" /></a>
+                <?php endif;?>
+            </td>
+        	</tr>		
+		<?php endforeach;?>
+		</table>
+		<?php echo $this->classifieds; ?>
+	<?php } else{?>
+			<div class="errors">There are no classifieds under <?php echo $this->category_name ?></div>
+	<?php }?>
+</div>
+<div align="center" class="tips">
+	<p>Select a category from the dropdown to filter</p>
+	<p><img alt="bid" class="icon" src="<?php echo $this->baseUrl('/styles/icons/16/add.png')?>" /> to bid</p>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>	
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</ul>

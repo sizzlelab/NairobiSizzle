@@ -1,0 +1,54 @@
+<style type="text/css">
+	.nav li {width: 33%;}
+	.bottom-nav li {width: 33%}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<ul class="nav">
+    <li><a class="active" href="<?php echo $this->url(array('controller'=>'index', 'action'=>'bizads')) ?>">Business</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'bizads')) ?>">Category</a></li>
+</ul>
+<div class="content">
+	<?php if(isset($this->form)): ?> 
+		<?php echo $this->form;?>
+	<?php endif;?>
+	<?php if(!empty($this->category_name)):?>
+		<h1 align="center"><?php echo $this->category_name ?>: price list</h1>
+	<?php endif;?>
+	<?php if(!empty($this->products)):?>
+		<table>
+		<tr>
+		<th>name</th>
+		<th width="5%"></th>
+		<th>description</th>
+		<th>price (shs)</th>
+		</tr>
+		<?php foreach ($this->products as $product): ?>
+			<tr>
+            <td><b><?php echo $this->escape($product['name'])?></b></td>
+            <td><a class="icon" href="<?php echo $this->url(array('controller'=>'businesses', 'action'=>'profile','bizid'=>$product['business_id'])) ?>"><img alt="vendor" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>"/></a></td>
+            <td><p><?php echo $this->escape($product['description'])?></p></td>
+            <td><p><?php echo 'shs '.$this->escape(number_format($product['price'],"2",".",","))?></p></td>
+        	</tr>		
+		<?php endforeach;?>
+		</table>
+		<?php echo $this->products ?>
+	<?php elseif(empty($this->products)):?>
+		<div class="errors">
+			no product uploads
+		</div>
+	<?php endif;?>
+</div>
+<div class="tips">
+	<p align="center">view products in <a href="<?php echo $this->url(array('controller'=>'businesses','action'=>'viewproducts', 'catid'=>$this->catid)) ?>">detail</a> view</p>
+	<p align="center">select a category from the drop down above to filter products by category</p>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>	
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</ul>

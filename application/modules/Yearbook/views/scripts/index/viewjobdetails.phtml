@@ -1,0 +1,29 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style><ul class="tabs"><li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php  echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'index'));?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'));?>">Logout</a></li>
+</ul><ul class="nav"><li><a class="active" href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+</ul><p><div class="content"><center><h1>selected job details </h1></center><center><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/back.png') ?>" />   <a href=" <?php echo $this->url(array('controller'=>'index','action'=>'reviewjoblist','jobfield'=>$this->jobfield)); ?>">Back to selected job list</a></center>
+<?php foreach($this->jobdetails as $jobdetails) : ?><table><tr><th>Company</th><th>Date Advertised</th><th>Closing Date</th></tr>
+<tr><td><?php echo $this->escape($jobdetails['company']);?></td><td><?php echo $this->escape($jobdetails['dateadvertised']);?></td><td><?php echo $this->escape($jobdetails['duedate']);?></td></tr></table>
+<table><tr bgcolor="#ccccdc"><th>Description</th></tr><tr><td><?php echo $this->escape($jobdetails['description']);?></td></tr>
+<tr bgcolor="#ccccdc"><th>Qualifications</th></tr><tr><td><?php echo $this->escape($jobdetails['qualifications']);?></td></tr>
+<tr bgcolor="#ccccdc"><th>How to Apply</th></tr><tr><td><?php echo $this->escape($jobdetails['appprocedure']);?></td></tr>
+<tr bgcolor="#ccccdc"><th>Posted By</th></tr> <tr><td><a href="<?php echo $this->url(array('module'=>'default','controller'=>'person','action'=>'view-full-info','id'=>$jobdetails['userId'] ));?>"><?php echo $this->escape($jobdetails['postedby']); ?></a>
+</td></tr></table>
+        <div class="tips">
+ <center><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/back.png') ?>" />   <a href=" <?php echo $this->url(array('controller'=>'index','action'=>'reviewjoblist','jobfield'=>$this->jobfield)); ?>">Back to selected job list</a></center>
+        To get contact details of the person who posted this job, Click here(<a href="<?php echo $this->url(array('module'=>'default','controller'=>'person','action'=>'view-full-info','id'=>$jobdetails['userId'] ));?>"><?php echo $this->escape($jobdetails['postedby']); ?>)<img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a>
+   </div>
+<?php endforeach; ?></div>
+<ul class="bottom-nav">
+     <li><a class="active" href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+     <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+
+</ul>

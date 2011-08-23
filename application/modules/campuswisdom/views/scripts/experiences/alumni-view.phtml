@@ -1,0 +1,21 @@
+<?php //if(empty ($this->results) || empty($this->result2) ){echo $this->form; }
+ if(!empty($this->results)) {foreach ($this->results as $result):?>
+
+ <li>
+     <a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'title-details','name'=>$result->title));?>">
+ <?php echo $this->escape($result->title);?>
+     </a>
+    </li>
+
+<?php endforeach;?>
+    
+<?php }
+else if(!empty($this->result2)){
+foreach ($this->result2 as $result):?>
+    <li>
+       <a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails','name'=>$result->Name));?>">
+ <?php echo $this->escape($result->Name);?>
+     </a>
+    </li>
+<?php endforeach;}
+else { echo $this->form; }?>

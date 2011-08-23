@@ -1,0 +1,26 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style><ul class="tabs"><li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php  echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'index'));?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'));?>">Logout</a></li>
+</ul><ul class="nav"><li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+<li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+</ul><div class="content"><center><h1>CV and Interview Tips </h1></center>
+<table><tr><td><img alt="professions" align="left" src="<?php echo $this->baseUrl('/styles/icons/exp2.jpg') ?>" /></td>
+<td><div class="tips">Qualified but no job yet?Your CV could be it or maybe your interview skills.<br />
+            Be wise:Know how to write best CV and prepare for an interview .</div></td></tr></table>
+<table ><tr><td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'cvtips'));?>"> CV writing Tips</a></td>
+<td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'cvtips'));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td>
+<td>| <a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'interviewtips'));?>">Interview tips</a> </td>
+<td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'interviewtips'));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr></table>
+<div class="tips">Select CV tips to get advice on how to write good CV or Interview Tips to help you get ready for that crucial interview.
+</div></div>
+<ul class="bottom-nav">
+     <li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+     <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+    <li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+
+</ul>

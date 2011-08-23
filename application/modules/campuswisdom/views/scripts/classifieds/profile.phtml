@@ -1,0 +1,99 @@
+<style type="text/css">
+	.nav li {width: 33%;}
+	.bottom-nav li {width: 33%}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+    <li><a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'bizads')) ?>">Business</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">All</a></li>
+</ul>
+<ul class="nav">
+    <li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<?php if(!empty($this->msg)):?>
+	<div class="ok">
+		<?php echo $this->msg;?>
+	</div>
+<?php endif;?>
+<h1 align="center">classified details</h1>
+	<?php if(!empty($this->classified)): ?>
+		<table class="vertical-image">
+		<tr>
+            <th><img alt="<?php echo $this->classified['title']."'s logo"?>" class="framed"
+                     src="<?php echo $this->baseUrl('/uploads/classifieds/'.$this->classified['image_url']) ?>" /><br />
+            <?php if($this->user_id == $this->classified['added_by']):?>
+            	<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'myclassifieds','action'=>'addlogo','classid'=>$this->classified['classified_id']), null, true)?>"><img align="right" alt="edit image" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a>
+            <?php endif;?>         
+          	</th><td><b><?php echo $this->classified['title']?></b> 
+            <?php if($this->user_id == $this->classified['added_by']):?>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'myclassifieds','action'=>'editprofile','classid'=>$this->classified['classified_id']), null, true)?>"><img alt="edit classified" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /></a>
+			<?php endif;?>           
+	       	<p><b class="meta">location: </b><?php echo $this->classified['location']?></p>
+	      	<p><b class="meta">price in shs: </b><?php echo $this->classified['price']?></p>
+	      	<p><b class="meta">description: </b><?php echo $this->classified['description']?></p>
+	      	<span class="meta"><b>category: </b><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index', 'catid'=>$this->classified['category_id']))?>"><?php echo $this->category ?></a></span>
+	      	<br /><span class="meta"><b>added by: </b><a href="<?php echo $this->url(array('module'=>'default', 'controller'=>'person', 'action'=>'view-contact-info', 'id'=>$this->user_id))?>"><?php echo $this->owner; ?></a></span>
+            <?php if($this->onAuction):?>
+                	<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'classifieds', 'action'=>'placebid', 'classid'=>$this->classified['classified_id']), null, true)?>"><img  align="right" alt="bid" class="icon" src="<?php echo $this->baseUrl('/styles/icons/16/add.png')?>" /></a>
+                <?php endif;?>
+            </td>
+        </tr>
+		</table>
+		<!-- To display an array of images here -->
+		<h2 align="center">images
+		<?php if($this->user_id == $this->classified['added_by']):?>
+			<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'myclassifieds','action'=>'addimage','classid'=>$this->classified['classified_id']), null, true)?>"><img alt="upload image" src="<?php echo $this->baseUrl('/styles/icons/16/up.png') ?>" /></a>
+		<?php endif;?></h2>
+		<?php if(!empty($this->class_images)){?>
+			<table><tr>
+				<?php foreach ($this->class_images as $class_images):?>
+					<td><img alt="img" height="48px" src="<?php echo $this->baseUrl('/uploads/classifieds/'.$class_images['url']) ?>" width="48px" /></td>
+				<?php endforeach;?></tr>
+			</table>
+			<?php echo $this->class_images; ?>
+		<?php }else {?>
+			<div class="errors">No images uploaded</div>
+		<?php }?>
+	<?php endif;?>
+	<?php if($this->classified['to_auction'] == 1 && ($this->user_id == $this->classified['added_by'])):?>
+		<h2 align="center">requests placed</h2>
+	
+	<?php if(!empty($this->requests)){?>
+		<div>
+		<table>
+		<?php foreach($this->requests as $request):?>
+		<tr><td class="entry">
+			<p><span class="meta">price quoted: </span><?php echo $request['amount']?></p>
+			<p><span class="meta">added by: </span> <?php echo $request['added_by']?></p>
+			<p><span class="meta">comment: </span> <?php echo $request['comment']?></p></td>
+		</tr>
+        <?php endforeach; ?>
+        </table>
+		</div>
+        <?php echo $this->requests;?>
+	<?php }elseif(empty($this->requests)){?>
+		<div class="errors">No requests placed</div>
+	<?php }?>
+	<?php endif;?>
+</div>
+<div align="center" class="tips">
+	<?php if($this->user_id == $this->classified['added_by']){?>
+		<p>To upload an image click (<img alt="add" src="<?php echo $this->baseUrl('/styles/icons/16/up.png') ?>" />)</p>
+		<p>To edit this classified click (<img alt="edit classified" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" />) next to the title</p>
+	<?php } elseif($this->onAuction) {?>
+		<p><img alt="bid" class="icon" src="<?php echo $this->baseUrl('/styles/icons/16/add.png')?>" /> to bid</p>
+	<?php }?>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>	
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</ul>

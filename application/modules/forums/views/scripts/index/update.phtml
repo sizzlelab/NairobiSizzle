@@ -1,0 +1,25 @@
+<ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><?php if($this->role == 1) : ?><style type="text/css"> .nav li{width: 25%;} .bottom-nav li{width: 25%;}</style><ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Requests</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><style type="text/css"> .nav li{width: 33%;} .bottom-nav li{width: 33%;}</style><ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php else : ?><style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;}</style><ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+</ul><?php endif; ?><div class="content"><?php if(!is_null ($this->response)) { ?><p class="ok"><?php echo $this->response; ?></p><?php } if(!is_null ($this->error)) { ?><p class="errors"><?php echo $this->error; ?></p><?php } if(isset ($this->form)) { echo $this->form; } ?></div>
+<?php if($this->role == 1) : ?><ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Requests</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php else : ?><ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li></ul><?php endif; ?>

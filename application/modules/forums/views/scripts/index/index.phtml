@@ -1,0 +1,22 @@
+<style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;} </style><ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><ul class="nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),null,true) ?>">Groups</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li>
+</ul><div class="content"><?php if(!is_null($this->error)) echo '<p class="errors">'.$this->error;'</p>'; ?><?php if(!is_null($this->msg)) echo '<p class="ok">'.$this->msg;'</p>'; ?>
+<h1>My Groups</h1><a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'new','module'=>'forums'), null, true); ?>">Create</a>
+<a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'available-groups','module'=>'forums'), null, true); ?>">Public</a>
+<a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'allgroups','module'=>'forums'), null, true); ?>">Search</a>
+<?php if (!empty ($this->invites)) : ?><a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'myinvites','module'=>'forums'), null, true); ?>">Invites(<?php echo count($this->invites);?>)</a><?php endif;?>
+<?php if (count($this->paginator)) : ?><table align="center" class="vertical-image"><?php foreach ($this->paginator as $myGroup): ?>
+<tr><th align="center"><?php if ($myGroup->getGroupType() == 'open') : ?><a href="<?php echo $this->url(array('controller'=>'thread', 'action'=>'get-group-threads', 'module'=>'forums', 'id'=>$myGroup->id), 'default', true);?>"><img alt="Group" align="middle" src="<?php echo $this->baseUrl('/styles/icons/forums/group.jpg') ?>"></a>
+<?php else : ?><a href="<?php echo $this->url(array('controller'=>'thread', 'action'=>'get-group-threads', 'module'=>'forums', 'id'=>$myGroup->id), 'default', true);?>"><img alt="Group" align="middle" src="<?php echo $this->baseUrl('/styles/icons/forums/closed.jpg') ?>"></a>
+<?php endif; ?></th><td><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$myGroup->getId()),null,true) ?>"><b><?php echo $myGroup->getTitle(); ?></b></a>
+<div class="entry"><?php echo $myGroup->getDescription() ? strlen($myGroup->getDescription()) > 50 ? '<p>' . $this->escape(substr($myGroup->getDescription(), 0, 50) . '...') . '</p>' : '<p>'. $this->escape($myGroup->getDescription()) . '</p>' : '' ?>
+<p class="meta">Members: <span class="meta"><?php echo $myGroup->getNumberOfMembers(); ?></span> | Created: <span class="meta"><?php $date = new Application_Model_Date(); echo $date->relativeTime($myGroup->getCreatedAt()); ?></span></p>
+<a class="icon" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$myGroup->getId()),null,true) ?>"><img alt="Profile" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>"</a> <a class="icon" href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums','id'=>$myGroup->getId()),null,true) ?>"><img alt="Posts" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png') ?>" /></a>
+</div></td></tr><?php endforeach ?></table><?php endif; echo $this->paginator; ?></div>
+<div class="tips"><p><img alt="Open Group" src="<?php echo $this->baseUrl('/styles/icons/forums/group16.jpg') ?>" /> - Open Group <img alt="Closed or Hidden Group" src="<?php echo $this->baseUrl('/styles/icons/forums/closed16.jpg') ?>" /> - Closed/Hidden Group
+<img alt="Group Profile" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> - Profile <img alt="Posts" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png') ?>" /> - Posts </p> </div>
+<ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),null,true) ?>">Groups</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li></ul>

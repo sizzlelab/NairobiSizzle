@@ -1,0 +1,26 @@
+<?php
+    include 'menu.phtml'
+?>
+<div class="content">
+
+
+     <?php if(isset($this->message))
+             {
+                 echo '<div class="ok">' .$this->message.' </div>'; ?>
+                  <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'creategroup')) ?>">Create group</a></li>
+            <?php }
+             ?>
+
+    <?php
+        if(isset($this->form))
+        {
+            echo $this->form;
+        }
+    ?>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+	<li><a>Maps</a></li>
+</ul>

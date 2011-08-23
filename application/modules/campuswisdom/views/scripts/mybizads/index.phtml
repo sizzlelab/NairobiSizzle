@@ -1,0 +1,94 @@
+<style type="text/css">
+	.nav li {width: 33%;}
+	.bottom-nav li {width: 33%}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+    <li><a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'bizads')) ?>">Business</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'index')) ?>">Classified</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">My ads</a></li>    
+</ul>
+<ul class="nav">
+    <li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'addbusiness')) ?>">+ Business</a></li>
+    <li><a href="<?php echo $this->url(array('controller'=>'classifieds', 'action'=>'addclassified')) ?>">+ Classified</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<h1 align="center">my advertisements</h1>
+<?php if(!empty($this->msg)):?>
+	<div class="ok">
+		<?php echo $this->msg; ?>
+	</div>
+<?php endif;?>
+<?php if(!empty($this->error)):?>
+	<div class="errors">
+		<?php echo $this->msg; ?>
+	</div>
+<?php endif;?>
+<h2 align="center">businesses added</h2>
+<?php if(!empty($this->businesses)):?>
+	<table>
+		<tr>
+			<th>name</th>
+			<th>date added</th>
+		</tr>
+		<?php foreach ($this->businesses as $business):?>
+			<tr>
+				<td><b><?php echo $business['name']?></b></td>
+				<td><?php 
+					$date = new Zend_Date($business['date_added']);
+				echo $date->getDate()->toString('Y-MM-d');?></td>
+				<td width=35%>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'businesses', 'action'=>'profile','bizid'=>$business['id']), null, true) ?>"><img alt="view" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>"/></a>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads', 'action'=>'editprofile','bizid'=>$business['id']), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"/></a>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'mybizads', 'action'=>'takeoffline','bizid'=>$business['id']), null, true) ?>"><img alt="take offline" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"/></a></td>
+			</tr>
+		<?php endforeach;?>
+	</table>
+	<?php echo $this->businesses; ?>
+<?php elseif(empty($this->businesses)): ?>
+	<p class="errors">No businesses added</p>
+<?php endif;?>
+
+<h2 align="center">classifieds added</h2>
+<?php if(!empty($this->classifieds)):?>
+	<table>
+		<tr>
+			<th>name</th>
+			<th>date added</th>
+		</tr>
+		<?php foreach ($this->classifieds as $classified):?>
+			<tr>
+				<td><b><?php echo $classified['title']?></b></td>
+				<td><?php 
+					$date = new Zend_Date($classified['date_added']);
+				echo $date->getDate()->toString('Y-MM-d');?></td>
+				<td width=35%>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'classifieds', 'action'=>'profile','classid'=>$classified['classified_id']), null, true) ?>"><img alt="view" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>"/></a>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'myclassifieds', 'action'=>'editprofile','classid'=>$classified['classified_id']), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"/></a>
+				<a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom', 'controller'=>'myclassifieds', 'action'=>'takeoffline','classid'=>$classified['classified_id']), null, true) ?>"><img alt="take offline" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"/></a></td>
+			</tr>
+		<?php endforeach;?>
+	</table>
+	<?php echo $this->classifieds; ?>
+<?php elseif(empty($this->classifieds)): ?>
+	<p class="errors">No classifieds added</p>
+<?php endif;?>
+</div>
+<div align="center" class="tips">
+	<p><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'addbusiness'))?>">+ Business</a> to add your business or <a href="<?php echo $this->url()?>">+ classified</a> to add a classified ad</p>
+	<?php if(!empty($this->classifieds)):?>
+	<p>To upload an image/video or add product click (<img alt="add" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" />) to go to profile</p>
+	<?php endif;?>
+	<p>Offline ads are not viewable by others, while online ads are viewable globally</p>
+	<p>(<img alt="add" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" />)-Put offline</p>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller' => 'mybizads','action'=>'offlineads')) ?>">Offline ads</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</ul>

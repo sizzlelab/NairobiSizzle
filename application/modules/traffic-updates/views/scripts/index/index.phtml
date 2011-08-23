@@ -1,0 +1,37 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Routes</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>
+<div class="content">
+<h1>Subscribed Routes<span class="right"><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Refresh" src="<?php echo $this->baseUrl('/styles/icons/16/repeat.png') ?>" /></a></span></h1>
+<?php if ($this->posted): ?>
+<p class="ok">Your update has been posted successfully</p>
+<?php endif; if ($this->unsubscribed): ?>
+<p class="ok">Unsubscription from <?php echo $this->name ? '<b>' . $this->escape($this->name) . '</b>' : 'route' ?> successful</p>
+<?php endif; if ($this->routes): foreach($this->routes as $route): $update = $route['update']; $route = $route['route'] ?>
+<h2><?php echo $this->escape($route->getName()) ?><span class="right"><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'updates', 'id' => $route->getId()), null, true) ?>"><img alt="Updates" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'unsubscribe', 'id' => $route->getId(), 'name' => $route->getName()), null, true) ?>"><img alt="Unsubscribe" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /></a></span></h2>
+<?php if ($update): ?>
+<table class="vertical-image">
+<tr><th><img alt="<?php echo $this->escape($update->getPosterName())?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $update->getPosterId()), null, true) ?>" /></th><td><b><?php echo $this->escape($update->getTitle()) ?></b><p><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $update->getPosterId()), null, true) ?>"><?php echo $this->escape($update->getPosterName()) ?></a></p></td></tr>
+<tr><td class="entry" colspan="2"><p><?php echo $this->escape($update->getBody()) ?></p><p class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($update->getCreatedAt()))  ?></p><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'comments', 'route' => $route->getId(), 'update' => $update->getId()), null, true) ?>"><img alt="Comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png') ?>" /></a><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'comments', 'route' => $route->getId(), 'update' => $update->getId()), null, true) ?>"><img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png') ?>" /><span class="meta">(<?php echo $this->escape(number_format($update->getReplies())) ?>)</span></a><?php if ($this->id == $update->getPosterId()): ?><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'delete-update', 'route' => $route->getId(), 'update' => $update->getId()), null, true) ?>"><img alt="Delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /></a><?php endif ?></td></tr>
+</table>
+<?php else: ?>
+<p class="entry meta">Be the first to <a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'updates', 'id' => $route->getId()), null, true) ?>">post an update!</a></p>
+<?php endif; endforeach; echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'subscribed routes')) ?>
+<div class="tips"><p>The most recent traffic updates from routes that you have subscribed to are shown on this page.</p><p><img alt="refresh" src="<?php echo $this->baseUrl('/styles/icons/16/repeat.png') ?>" /> - Refresh<img alt="updates" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> - Post and view updates<img alt="unsubscribe/delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Unsubscribe/Delete update<img alt="comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png') ?>" /> - Comment<img alt="comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png') ?>" /> - View comments</p></div>
+<?php else: ?>
+<p class="ok">You haven't subscribed to any routes yet.</p><p><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">Click here</a> to view and subscribe to existing routes.</p><p><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'new'), null, true) ?>">Click here</a> to create your own route.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>

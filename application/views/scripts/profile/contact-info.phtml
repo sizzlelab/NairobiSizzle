@@ -1,0 +1,40 @@
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $this->person ? $this->person->id : '')) ?>">Basic</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'contact-info', 'id' => $this->person ? $this->person->id : '')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'course-info', 'id' => $this->person ? $this->person->id : '')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'friends', 'id' => $this->person ? $this->person->id : '')) ?>">Friends</a></li>
+</ul>
+<div class="content">
+<?php if ($this->person): $person = $this->person; if ($person->connection == 'none'): ?>
+<p><a class="button" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'add', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username, 'page' => $this->page), null, true) ?>">Add as friend</a></p>
+<?php else: if ($person->connection == 'friend'): ?>
+<p><a class="button" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'remove', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>">Remove as friend</a></p>
+<?php else: if ($person->connection == 'pending'): ?>
+<p><a class="button" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'accept', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>">Accept request</a>&nbsp;<a class="button" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'ignore', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username), null, true) ?>">Ignore request</a></p>
+<?php endif; endif; endif ?>
+<table class="vertical">
+<tr><td style="width: 30%"><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username) ?>'s avatar" class="framed" src="<?php echo $this->url(array('controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></td><td><h1><?php echo $person->name ? trim($person->name->unstructured) ? $this->escape($person->name->unstructured) : '_______' : '_______' ?></h1></td></tr>
+<?php if ($person->status->message): ?><tr><td class="entry" colspan="2"><?php echo $this->escape($person->status->message) ?><p class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($person->status->changed)) ?></p></td></tr><?php endif ?>
+<tr><td colspan="2"><h2>Contact Info</h2></td></tr>
+<tr><th>Current location: </th><td><?php echo $person->location ? $person->location->label ? $this->escape($person->location->label) : '_______' : '_______' ?><?php if ($person->location && $person->location->updated_at): ?><p class="meta">Updated: <?php echo $this->escape(Application_Model_Date::relativeTime($person->location->updated_at)) ?></p><?php endif ?></td></tr>
+<tr><th>Phone: </th><td><?php echo $person->phone_number ? $this->escape($person->phone_number) : '_______' ?></td></tr>
+<tr><th>Postal Address: </th><td><?php echo $person->address ? trim($person->address->unstructured) ? $this->escape($person->address->unstructured) : '_______' : '_______' ?></td></tr>
+<tr><th>Facebook Profile: </th><td><?php echo $person->irc_nick ? '<a href="http://www.facebook.com/' . $person->msn_nick . '">' . 'http://www.facebook.com/' . $person->msn_nick . '</a>' : '_______' ?></td></tr>
+<tr><th>Twitter Profile: </th><td><?php echo $person->irc_nick ? '<a href="http://twitter.com/' . $person->irc_nick . '">' . 'http://twitter.com/' . $person->irc_nick . '</a>' : '_______' ?></td></tr>
+<tr><th>Website: </th><td><?php echo $person->website ? '<a href=" ' . $person->website .'">' . $person->website . '</a>' : '_______' ?></td></tr>
+</table>
+<?php else: ?>
+<p class="errors">An error occurred and the profile could not be retrieved. Please try again later.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $this->person ? $this->person->id : '')) ?>">Basic</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'contact-info', 'id' => $this->person ? $this->person->id : '')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'course-info', 'id' => $this->person ? $this->person->id : '')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'friends', 'id' => $this->person ? $this->person->id : '')) ?>">Friends</a></li>
+</ul>

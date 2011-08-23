@@ -1,0 +1,20 @@
+<style type="text/css">
+.nav li, .bottom-nav li {width:50%;}
+</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index'), null, true); ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'index','action'=>'register'), null, true); ?>">File sharing</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'), null, true); ?>">Logout</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'index')); ?>">Downloads</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'register')); ?>">Uploads</a></li>
+</ul>
+<div class="content">
+<h1>Upload a file</h1>
+<?php echo $this->form?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'index')); ?>">Downloads</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'register')); ?>">Uploads</a></li>
+</ul>

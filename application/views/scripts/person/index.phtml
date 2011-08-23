@@ -1,0 +1,48 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<?php if ($this->person): $person = $this->person ?>
+<h1>Basic Info<span class="right"><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $this->person ? $this->person->id : ''), null, true) ?>"><img alt="Preview" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></span></h1>
+<?php if ($this->updated): ?>
+<p class="ok">Profile updated</p>
+<?php endif;if ($this->statusUpdated): ?>
+<p class="ok">Your status has been updated. Your friends will now be able to see your status when they visit your profile.</p>
+<?php endif; if ($this->errors): ?>
+<ul class="errors">
+<?php foreach($this->errors as $error): ?>
+<li><?php echo $error ?></li>
+<?php endforeach ?>
+</ul>
+<?php endif ?>
+<table class="vertical">
+<tr><th>Profile Picture:</th><td colspan="2"><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username) ?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id), null, true) ?>" /><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-avatar'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->avatar->status == 'set'): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-avatar', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>Names:</th><td><?php echo $person->name ? trim($person->name->unstructured) ? $this->escape($person->name->unstructured) : 'Not set' : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-name'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->name && trim($person->name->unstructured)): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-name', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>Gender:</th><td><?php echo $person->gender ? $this->escape(ucfirst(strtolower($person->gender))) : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-gender'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a></td></tr>
+<tr><th>Birthday:</th><td><?php if ($person->birthdate) { $date = new Zend_Date($person->birthdate); echo $date->toString('dd MMM Y'); } else { echo 'Not set'; } ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-birthdate'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->birthdate): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-birthdate', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+<tr><th>About me:</th><td><?php echo $person->description ? $this->escape($person->description) : 'Not set' ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-description'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a><?php if ($person->description): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-description', 'clear' => 1), null, true) ?>"><img alt="clear" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>"</a><?php endif ?></td></tr>
+</table>
+<div class="tips"><p>Last updated: <?php echo $this->escape(Application_Model_Date::relativeTime($person->updated_at)) ?></p><p><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /> - Edit a field <img alt="delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Clear a field <img alt="preview" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> - Preview</p></div>
+<?php else: ?>
+<p class="errors">An error occurred and your profile could not be retrieved. Please try again later.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+</ul>

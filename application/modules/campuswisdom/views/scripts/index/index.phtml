@@ -1,0 +1,47 @@
+<style type="text/css">.nav li,.bottom-nav li{width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'index')) ?>">Wisdom</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'person','action'=>'index')) ?>">Profile</a></li>
+</ul>
+<div class="nav">
+<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</div>
+<div class="content">
+<?php echo "<h1 style='margin-left: 20%;'>".$this->title."</h1>"; ?>
+<table class="vertical-image">
+<tr><th><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>"><img src="<?php echo $this->baseUrl('styles/icons/48/events.png') ?>" alt="Events" /></a></th>
+<td><h2>Campus Events</h2><p>Know what's happening.</p><?php if($this->week!=0) {?><p>Events this week: <span class="meta"><?php echo $this->week; ?></span></p><?php } ?><p><a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index'));?>"><img alt="Go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></p></td>
+</tr>
+<tr><th><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>"><img src="<?php echo $this->baseUrl('styles/icons/48/Campus.png') ?>" alt="Ads" /></a></th>
+<td>
+<h2>Ads</h2>
+<p>Get seen</p>
+<p><a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads'));?>"><img alt="edit a field" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></p>
+</td>
+</tr>
+<tr>
+<th>
+<a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'exps','action'=>'index')) ?>"><img src="<?php echo $this->baseUrl('/styles/icons/48/Campus.png') ?>" alt="Exp" /></a>
+
+</th>
+<td>
+<h2>Experiences</h2>
+<p>Experience campus life</p>
+<p><a class="icon" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails'));?>"><img alt="edit a field" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></p>
+
+</td>
+</tr>
+
+</table>
+</div>
+<div align="center" class="tips">
+<p>Click <img alt="edit a field" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> to view details</p>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+</ul>

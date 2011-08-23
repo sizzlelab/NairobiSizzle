@@ -1,0 +1,14 @@
+<?php include 'menu.phtml'?>
+<div class="content">
+    <?php if ($this->message){
+    echo '<p class="ok">'.$this->message.'</p>';
+    }
+    ?>
+    <?php if ($this->error){ ?>
+    <ul class="errors">
+        <li><?php echo $this->error ?></li>
+    </ul>
+    <?php } ?>
+     <?php echo $this->form;?>
+</div>
+<?php include 'bottomnav.phtml';?>

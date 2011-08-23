@@ -1,0 +1,2 @@
+<?php
+class TrafficUpdates_Model_Mapper_Routes_Exception extends Application_Model_Mapper_Exception {}

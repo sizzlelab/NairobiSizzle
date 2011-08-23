@@ -1,0 +1,44 @@
+<style type="text/css">
+	.bottom-nav li {width:33%;}
+</style>
+<?php include "menu.phtml";//echo $this->action('namedetails', 'experiences', 'Experiences');  ?>
+<div class="content">
+    <img  alt="Campus Life" class="framed" height="24" src="<?php echo $this->baseUrl('/styles/icons/16/Campus.png')?>" width="24"/>
+<span style="display: inline-block;width:auto"><h1>Experiences</h1></span>
+<?php if(isset($this->msg)){?>
+	<div class="ok"><?php echo $this->msg;?></div>
+<?php }?>
+<?php if(isset($this->error)):{?>
+<div class="errors"><?php echo $this->error;}?></div>
+<?php if(isset($this->error1)){?>
+<div class="errors"><?php echo $this->error1;} ?></div>
+<?php endif;?>
+<?php if(!empty($this->result)){
+    //echo $this->action('namedetails', 'experiences', 'campuswisdom');
+	if (!$this->action('namedetails', 'experiences', 'campuswisdom')) {?>
+<table>
+<?php foreach ($this->result as $R): ?>
+    <h2><?php echo $R['Name'] ?></h2>
+    <p><?php echo $R['Views'] ?></p>
+    <p class="meta"><a class="icon" href="<?php echo $this->url(array('action' => 'viewcomments', 'controller' => 'exps', 'module' => 'campuswisdom', 'expid' => $R['ExpId'])) ?>"><img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png')?>" /></a>
+<a class="icon" href="<?php echo $this->url(array('controller' => 'exps', 'action' => 'comment', 'module' => 'campuswisdom', 'expid' => $R['ExpId'])) ?>"><img alt="Comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /></a></p>
+<tr><td><h2> <?php echo $R['Name'] ?></h2>
+<p>Descriptions: <?php echo $R['Views'] ?></p>
+ <a class="icon" href="<?php echo $this->url(array('action' => 'viewcomments', 'controller' => 'exps', 'module' => 'campuswisdom', 'expid' => $R['ExpId'])) ?>"><img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png')?>" /></a>
+<a class="icon" href="<?php echo $this->url(array('controller' => 'exps', 'action' => 'comment', 'module' => 'campuswisdom', 'expid' => $R['ExpId'])) ?>"><img alt="Comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /></a>></td></tr>
+<?php endforeach; ?></table>
+<?php echo $this->result;} else {
+	echo $this->action('namedetails', 'experiences', 'campuswisdom');} ?>
+<?php  }else { ?>
+<div class="errors">
+		<?php echo "no experiences in this category";?></div>
+<?php }?>
+</div><div class="tips">
+    <a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'exps','action'=>'experiences')) ?>">+experience</a> To share an Experience<br>
+	<a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'getexperiences')) ?>">View</a> To view a shared Experience
+       <br> <img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png')?>" /> To view all comments
+       <img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /> To add a comment</div>
+<div class="bottom-nav">	
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'exps','action'=>'index')) ?>">Experiences</a></li>
+	<li><a>Maps</a></li></div>

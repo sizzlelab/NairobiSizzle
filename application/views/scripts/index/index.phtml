@@ -1,0 +1,60 @@
+<ul class="tabs">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<?php if ($this->isUserLogged): ?>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+<?php else: ?>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'index')) ?>">Login</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'sign-up', 'action' => 'index')) ?>">Sign Up</a></li>
+<?php endif ?>
+</ul>
+<div class="content">
+<?php if ($this->isUserLogged): ?>
+<style type="text/css">.services{list-style:none;padding:0;margin:5px 3px}</style>
+<?php if ($this->statusUpdated): ?>
+<p class="ok">Your status has been updated. Your friends can now view it on their home page.</p>
+<?php endif ?>
+<a class="heading" href="#">Services</a>
+<ul class="services">
+<li><a href="<?php echo $this->url(array('module' => 'campuswisdom', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="" src="<?php echo $this->baseUrl('/styles/logos/16/campus_wisdom.png') ?>" /> Campus wisdom</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'forums', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="" src="<?php echo $this->baseUrl('/styles/logos/16/online_forums.png') ?>" /> Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'filesharing', 'controller' => 'index', 'action' => 'register'), null, true) ?>"><img alt="" src="<?php echo $this->baseUrl('/styles/logos/16/file_sharing.png') ?>" /> File sharing</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'Yearbook', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="" src="<?php echo $this->baseUrl('/styles/logos/16/yearbooks.png') ?>" /> Yearbook</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="" src="<?php echo $this->baseUrl('/styles/logos/16/traffic_updates.png') ?>" /> Traffic Updates</a></li>
+</ul>
+<?php if ($this->friendRequests): $requests = count($this->friendRequests) ?>
+<a class="heading" href="#">News</a>
+<?php if ($requests == 1): $requestor = $this->friendRequests[0]; ?>
+<p>You have a friend request from <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $requestor->id), null, true) ?>"><?php echo $this->escape($requestor->name ? trim($requestor->name->unstructured) ? $requestor->name->unstructured : $requestor->username : $requestor->username)?></a> (<a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'accept', 'id' => $requestor->id, 'names' => $requestor->name ? trim($requestor->name->unstructured) ? $requestor->name->unstructured : $requestor->username : $requestor->username), null, true) ?>">Accept</a> | <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'ignore', 'id' => $requestor->id, 'names' => $requestor->name ? trim($requestor->name->unstructured) ? $requestor->name->unstructured : $requestor->username : $requestor->username), null, true) ?>">Ignore</a>).</p>
+<?php else: ?>
+<p>You have <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'requests'), null, true) ?>"><?php echo $requests ?> friend requests</a>.</p>
+<?php endif; endif ?>
+<a class="heading" href="#">Status update</a>
+<?php echo $this->updateForm ?>
+<a class="heading" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'index'), null, true) ?>">Friends' Updates</a>
+<?php if ($this->friendsFeed): ?>
+<table class="vertical-image">
+<?php foreach($this->friendsFeed as $person): ?>
+<tr><th><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id)) ?>"><img alt="<?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></a></th><td><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id)) ?>"><?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?></a><p><?php echo strlen($person->status->message) > 50 ? $this->escape(substr($person->status->message, 0, 50) . '...') : $this->escape($person->status->message) ?></p><span class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($person->status->changed)) ?></span></td></tr>
+<?php endforeach ?>
+</table>
+<a  href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'index'), null, true) ?>">View all</a>
+<?php else: ?>
+<p><a  href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index'), null, true) ?>">Start making friends now!</a></p>
+<?php endif ?>
+<?php else: ?>
+<table class="vertical-image">
+<tr><th><a href="<?php echo $this->url(array('module' => 'campuswisdom', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Campus wisdom" src="<?php echo $this->baseUrl('/styles/logos/campus_wisdom.png') ?>" /></a></th><td><h1>Campus Wisdom</h1></td></tr>
+<tr><td class="entry" colspan="2">Know your university, what's where, what's happening and where it's happening!<br /><a class="icon" href="<?php echo $this->url(array('module' => 'campuswisdom', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Go" src="<?php echo $this->baseUrl('styles/icons/16/next.png') ?>" /></a></td></tr>
+<tr><th><a href="<?php echo $this->url(array('module' => 'forums', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Online forums" src="<?php echo $this->baseUrl('/styles/logos/online_forums.png') ?>" /></a></th><td><h1>Forums</h1></td></tr>
+<tr><td class="entry" colspan="2">Form discussion groups and get going with online discussions!<br /><a class="icon" href="<?php echo $this->url(array('module' => 'forums', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr>
+<tr><th><a href="<?php echo $this->url(array('module' => 'filesharing', 'controller' => 'index', 'action' => 'register'), null, true) ?>"><img alt="File sharing" src="<?php echo $this->baseUrl('/styles/logos/file_sharing.png') ?>" /></a></th><td><h1>File Sharing</h1></td></tr>
+<tr><td class="entry" colspan="2">Share your notes, documents, music and movies with your friends!<br /><a class="icon" href="<?php echo $this->url(array('module' => 'filesharing', 'controller' => 'index', 'action' => 'register'), null, true) ?>"><img alt="Go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr>
+<tr><th><a href="<?php echo $this->url(array('module' => 'Yearbook', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Yearbooks" src="<?php echo $this->baseUrl('/styles/logos/yearbooks.png') ?>" /></a></th><td><h1>Yearbooks</h1></td></tr>
+<tr><td class="entry" colspan="2">Connect with alumni, find jobs and internships!<br /><a class="icon" href="<?php echo $this->url(array('module' => 'Yearbook', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr>
+<tr><th><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Traffic Updates" src="<?php echo $this->baseUrl('/styles/logos/traffic_updates.png') ?>" /></a></th><td><h1>Traffic Updates</h1></td></tr>
+<tr><td class="entry" colspan="2">Post and get traffic updates from your friends!<br /><a class="icon" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>"><img alt="Go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr>
+</table>
+<div class="tips"><p><a href="<?php echo $this->url(array('controller' => 'login')) ?>">Login</a> with a single username and password to use all services.</p><p>Don't have an account? <a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign up</a> to get instant access to the services. It's absolutely <b>FREE!!</b></p></div>
+<?php endif ?>
+</div>

@@ -1,0 +1,33 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<h2>Location</h2>
+<?php if ($this->errors): ?>
+<ul class="errors">
+<?php foreach($this->errors as $error): ?>
+<li><?php echo $error ?></li>
+<?php endforeach ?>
+</ul>
+<?php endif ?>
+<?php if ($this->form) echo $this->form ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+</ul>

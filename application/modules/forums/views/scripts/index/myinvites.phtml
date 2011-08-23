@@ -1,0 +1,19 @@
+<style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;} </style><ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><ul class="nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),null,true) ?>">Groups</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li>
+</ul><div class="content"><?php if(isset ($this->error)) { ?><p class="errors"><?php echo $this->error; ?></p><?php } ?><h1>Group Invites</h1><?php if (!empty ($this->invites)) : ?>
+<table align="center" class="vertical-image"><?php foreach ($this->invites as $invite) : ?><tr><th align="center">
+<?php if ($invite->getGroupType() == 'closed') : ?><a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'profile', 'module'=>'forums', 'id'=>$invite->id), null, true);?>"><img alt="Group" align="middle" src="<?php echo $this->baseUrl('/styles/icons/forums/closed.jpg') ?>"></a>
+<?php else : ?><a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'profile', 'module'=>'forums', 'id'=>$invite->id), 'default', true);?>"><img alt="Group" align="middle" src="<?php echo $this->baseUrl('/styles/icons/forums/group.jpg') ?>"></a>
+<?php endif; ?></th><td><a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'profile', 'module'=>'forums', 'id'=>$invite->id), 'default', true);?>"><b><?php echo $invite->getTitle(); ?></b></a><div class="entry">
+<?php echo $invite->getDescription() ? strlen($invite->getDescription()) > 50 ? '<p>' . $this->escape(substr($invite->getDescription(), 0, 50) . '...') . '</p>' : '<p>'. $this->escape($invite->getDescription()) . '</p>' : '' ?>
+<p class="meta">Members: <span class="meta"><?php echo $invite->getNumberOfMembers(); ?></span> | Created: <span class="meta"><?php $date = new Application_Model_Date(); echo $date->relativeTime($invite->getCreatedAt()); ?></span></p>
+<a class="icon" href="<?php echo $this->url(array('controller'=>'index','action'=>'confirminvite','module'=>'forums','userID'=>$this->userID,'groupID'=>$invite->getId()), null, true) ?>"><img alt="Accept" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>"</a> <a class="icon" href="<?php echo $this->url(array('controller'=>'index','action'=>'ignoreinvite','module'=>'forums','userID'=>$this->userID,'groupID'=>$invite->getId()), 'default', true) ?>"><img alt="Ignore" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /></a>
+</div></td></tr><?php endforeach; ?></table><?php else : ?> <?php echo '<p class="Ok">No new invitations to other groups</p>'; ?><?php endif; ?>
+<div class="tips"><p><img alt="Accept" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /> - Accept <img alt="Ignore" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Ignore</p></div></div>
+<ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),null,true) ?>">Groups</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li>
+</ul>

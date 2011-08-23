@@ -1,0 +1,38 @@
+
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style>
+<ul class="tabs"><li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php  echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'index'));?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'));?>">Logout</a></li>
+</ul><ul class="nav"><li><a class="active" href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+</ul>
+<div class="content"><center><h1>Search Available Jobs</h1></center>
+<?php if(!empty($this->jobs)){ ?>
+<img alt="searchjob" align='left' src="<?php echo $this->baseUrl('/styles/icons/jobs2.jpg') ?>" />
+<table border="0" bgcolor="#ffffff">
+<?php foreach($this->jobs as $jobs) : ?><tr >
+    <td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'Viewjobdetails','jobfield'=>$jobs['field'],'jobid'=>$jobs['uniqueid']));?>"><?php echo $this->escape($jobs['company']);?></a></td>
+    <td><?php echo $this->escape($jobs['dateadvertised']);?></td>
+    <td><?php echo $this->escape($jobs['duedate']);?></td>
+    <td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'Viewjobdetails','jobfield'=>$jobs['field'],'jobid'=>$jobs['uniqueid']));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></tr>
+  <?php endforeach; ?>
+</table><?php echo $this->paginator; ?>
+<center><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'Availjobs'));?>">Search Others Job Fields <img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></center>
+<div class="tips">Click on company name or (<img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" />) to view full job details .To search other job fields click 'Search other njob fields' above .</div>
+ <?php }else{?>
+<?php $this->jobfield; if(isset($this->shedef) ){  ?>
+<p class="errors"> <?php echo "<br>Sorry. There are no jobs for ". $this->jobfield; ?></p><?php } ?>
+<table><tr><td><img alt="searchjob" align='left' src="<?php echo $this->baseUrl('/styles/icons/search.jpg') ?>" /></td>
+<td><div class="tips"> To view jobs in a desired field,select a job field and submit. </div></td></tr></table> <center>
+<?php echo $this->form;}?></center></div>
+<ul class="bottom-nav">
+     <li><a class="active" href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+     <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+
+</ul>

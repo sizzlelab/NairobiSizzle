@@ -1,0 +1,42 @@
+<style type="text/css">.nav li, .bottom-nav li {width:33%;} .vertical-image th {width: 5px;}</style>
+<ul class="tabs">
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Home</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index'), null, true) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index'), null, true) ?>">People</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'index'), null, true) ?>">Friends</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'requests'), null, true) ?>">Requests</a></li>
+</ul>
+<div class="content">
+<h1>Admin Set Up</h1>
+<?php echo $this->form; if ($this->errors): ?>
+<ul class="errors">
+<?php foreach($this->errors as $error): ?>
+<li><?php echo $error ?></li>
+<?php endforeach ?>
+</ul>
+<?php endif; if ($this->adminSet): ?>
+<p class="ok">Selected user(s) set as admin</p>
+<?php endif; if ($this->adminRemoved): ?>
+<p class="ok">Selected user(s) removed as admin</p>
+<?php endif ?>
+<?php if ($this->people): ?>
+<table class="vertical-image"><form action method="post">
+<?php foreach($this->people as $person): ?>
+        <tr><th><input name="user[]" type="checkbox" value="<?php echo $person->getId() ?>" /></th><td><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id), null, true) ?>"><?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?></a><?php if ($person->role == $this->adminRole): ?><p class="meta">Admin</p><?php endif; ?></td></tr>
+<?php endforeach ?>
+<tr><td colspan="2"><input name="submit" type="submit" value="Set Admin" /><input name="submit" type="submit" value="Remove Admin" /></td></tr>
+</form></table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'People')); else: if ($this->searchTerm): ?>
+<p class="errors">No people by the name '<?php echo $this->searchTerm ?>' exist</p>
+<?php else: ?>
+<p class="ok">There are no people!</p>
+<?php endif; endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'index')) ?>">Friends</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'requests'), null, true) ?>">Requests</a></li>
+</ul>

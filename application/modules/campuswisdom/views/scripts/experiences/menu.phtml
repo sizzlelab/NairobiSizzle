@@ -1,0 +1,8 @@
+<ul class="tabs">
+    <li><a href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a class="active" href="<?php echo $this->url() ?>">Experiences</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Logout</a></li>
+</ul><div class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Home</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'exps','action'=>'experiences')) ?>">+experience</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'getexperiences')) ?>">View</a></li></div>

@@ -1,0 +1,22 @@
+<?php if ($this->pageCount): ?>
+<div class="paginationControl">
+<?php if (isset($this->previous)): ?>
+<a href="<?php echo $this->url(array('page' => $this->first)); ?>">&laquo;</a>
+<?php else: ?><span>&laquo;</span><?php endif; ?>
+<?php if (isset($this->previous)): ?>
+<a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&lsaquo;</a>
+<?php else: ?><span>&lsaquo;</span><?php endif; ?>
+<?php foreach ($this->pagesInRange as $page): ?>
+<?php if ($page != $this->current): ?>
+<a href="<?php echo $this->url(array('page' => $page)); ?>"><?php echo $page; ?></a>
+<?php else: ?><span class="current"><?php echo $page; ?></span><?php endif; ?>
+<?php endforeach; ?>
+<?php if (isset($this->next)): ?>
+<a href="<?php echo $this->url(array('page' => $this->next)); ?>">&rsaquo;</a>
+<?php else: ?><span>&rsaquo;</span><?php endif; ?>
+<?php if (isset($this->next)): ?>
+<a href="<?php echo $this->url(array('page' => $this->last)); ?>">&raquo;</a>
+<?php else: ?><span>&raquo;</span><?php endif; ?>
+<p><?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?> of <?php echo $this->totalItemCount . ' ' . $this->itemName ?></p>
+</div>
+<?php endif; ?>

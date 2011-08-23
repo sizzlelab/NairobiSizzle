@@ -1,0 +1,26 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style><ul class="tabs"><li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php  echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'index'));?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'));?>">Logout</a></li>
+</ul><ul class="nav"><li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+<li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+</ul><div class="content"><center><h1>View job experiences</h1></center>
+<center><a href="<?php echo $this->url(array('controller'=>'index','action'=>'getjobexperiences','jobfield'=>$jobfield));?>">Others Job Fields <img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></center>
+<?php $jobfield= $this->jobfield;?>
+<table><tr><th>Company</th><th>Date Shared</th><th>Shared by</th></tr>
+<?php    foreach($this->jobexperiences as $jobexperiences) : ?>
+<tr><td><?php echo $jobexperiences['company']; ?></td><td><?php echo $jobexperiences['dateposted']; ?>   </td>
+<td> <a href="<?php echo $this->url(array('module'=>'default','controller'=>'person','action'=>'view-full-info','id'=>$jobexperiences['userId'] ));?>"><?php echo $jobexperiences['postedby']; ?></a></td>
+    <td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'experiencedetails','field'=>$jobexperiences['field'],'id'=>$jobexperiences['experienceid']));?>">View<img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr>
+<?php endforeach; ?></table><div class="tips">Click on (<img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" />) to view experience details.To view contacts or profile of the owner of this post, click the shared by name .</div>
+</div>
+<ul class="bottom-nav">
+     <li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+     <li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+
+</ul>

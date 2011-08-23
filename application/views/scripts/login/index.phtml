@@ -1,0 +1,38 @@
+<style type="text/css">
+    .bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+</ul>
+<div class="content">
+    <?php if ($this->loginRequired): ?>
+    <h2>Please log in to view this page</h2>
+    <?php endif ?>
+    <?php if(!empty($this->error)):?>
+    <div class="errors">
+            <?php echo $this->error; ?>
+    </div>
+    <?php endif;?>
+    <?php if(!empty($this->msg)):?>
+    <div class="ok">
+            <?php echo $this->msg; ?>
+    </div>
+    <?php endif;?>
+
+    <?php
+    if(isset($this->loginForm)) {
+        echo $this->loginForm;
+    }
+    ?>
+</div>
+<div align="center" class="tips">
+    <p>Login attempts remaining: <?php echo $this->attempts;?></p>
+    <p>Forgot your password? Click <a href="<?php echo $this->url(array('controller'=>'login', 'action'=>'recoverpassword')) ?>">Here</a></p>
+</div>	
+<ul class="bottom-nav">
+    <li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+</ul>

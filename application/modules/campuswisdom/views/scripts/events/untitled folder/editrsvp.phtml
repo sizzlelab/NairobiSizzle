@@ -1,0 +1,20 @@
+<?php
+    include 'menu.phtml'
+?>
+<div class="content">
+
+
+     <?php if(isset($this->message))
+             {
+                 echo '<div class="ok">' .$this->message.' </div>'; ?>
+                  <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'creategroup')) ?>">Create group</a></li>
+            <?php }
+             ?>
+
+    <?php
+        if(isset($this->form))
+        {
+            echo $this->form;
+        }
+    ?>
+</div>

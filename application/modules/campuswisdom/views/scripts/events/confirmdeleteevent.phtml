@@ -1,0 +1,54 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li, .bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'addevent')) ?>">Create</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'index')) ?>">Groups</a></li>
+</div>
+<div class="content">
+    <?php echo "<h1 style='margin-left: 20%;'>".$this->title."</h1>"; ?>
+     <table>
+        <tr>
+            <th align="left">Group</th>
+            <td><?php echo ucfirst($this->group_name); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Event</th>
+            <td><?php echo ucfirst($this->events['event_name']); ?></td>
+        </tr>
+        <tr>
+            <th align="left" valign="top">Description</th>
+            <td><?php echo ucfirst($this->events['event_agenda']); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Date</th>
+            <td><?php  $dat=strtotime($this->events['event_date']); echo date('l, jS M, Y',$dat); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Time</th>
+            <td><?php $time=strtotime($this->events['event_time']); echo date('g:i a',$time); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Venue</th>
+            <td><?php echo ucfirst($this->events['event_venue']); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Charges</th>
+            <td><?php echo $this->events['event_charges']; ?></td>
+        </tr>
+     </table>
+    <p style="background-color:#99FF99;height: 20px;border-width: thin;border-color: black;padding: 3px 0 3px 5px;">Are you sure you want to delete the event?</p><p style="margin-left: 40%"><a  class="button" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'vieweventsdetails','event_id'=>$this->event_id));?>">No</a>&nbsp;&nbsp;
+                <a  class="button" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'deleteevent','event_id'=>$this->event_id));?>">Yes</a></p>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+        <li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+</ul>

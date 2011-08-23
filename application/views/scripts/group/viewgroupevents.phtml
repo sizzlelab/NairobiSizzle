@@ -1,0 +1,67 @@
+<?php include 'menu.phtml'?> 
+ <div class="content">
+      <?php if ($this->message){
+    echo '<p class="ok">'.$this->message.'</p>';
+    }
+    ?>
+    <?php if ($this->error){ ?>
+    <ul class="errors">
+        <li><?php echo $this->error ?></li>
+    </ul>
+    <?php }
+        if(!empty($this->events))
+       {
+        foreach($this->events as $events)
+        {
+            ?>
+                <table>
+                    <tr>
+                        <th align="left">Event</th>
+                        <td><?php echo ucfirst($events->metadata['event_name']); ?></td>
+                    </tr>
+                    <tr>
+                        <th align="left" valign="top">Description</th>
+                        <td><?php echo ucfirst(substr($events->metadata['event_agenda'],0,30)."..."); ?></td>
+                    </tr>
+                    <tr>
+                        <th align="left" valign="top">Charges</th>
+                        <td><?php echo $events->metadata['event_charges']; ?><a style="float: right" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'vieweventsdetails','event_id'=>$events->id));?>"><img alt="edit a field" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                   <?php 
+                        //a little logic. This contravenes the idea of MVC a little bit.
+                        echo '<div style="margin-left:2%;margin-top:0%;">';
+                       $rsvp=new campuswisdom_Model_DbTable_Event();
+                        try{
+                          $hasRSVP=$rsvp->hasRSVPed($this->appid,$events->id,$this->personid);
+                        }catch(Exception $e){
+                             //echo nothing
+                        }
+                        if($hasRSVP==False){
+                        ?>
+                   <a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'rsvp','event_id'=>$events->id)) ?>">| RSVP to this event |</a>
+                   <?php }
+                   else{
+                        ?>
+
+                <?php echo $hasRSVP['msg']; ?>
+                 <a class="icon" href="<?php echo $this->url(array('module' => 'campuswisdom', 'controller' => 'events', 'action' => 'editrsvp','id'=>$hasRSVP['id'],'event_id'=>$events['id']), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a>
+
+                   <?php
+                   }
+                   echo '</div>';
+                   ?>
+                </td> </tr>
+               </table>
+    <hr style="height: 1%">
+<?php
+        }
+        echo $this->events;
+    }
+    else
+    {
+        echo "<div class='ok'>There no events currently</div>";
+    } ?>
+  </div>
+<?php include 'bottomnav.phtml';?>

@@ -1,0 +1,32 @@
+<ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><?php if($this->role == 1) : ?><style type="text/css">.nav li{width: 25%;} .bottom-nav li{width: 25%;}</style><ul class="nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a class="active" href="">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Requests</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), 'default', true); ?>">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><style type="text/css"> .nav li{width: 33%;} .bottom-nav li{width: 33%;}</style><ul class="nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a class="active" href="">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), 'default', true); ?>">Notify</a></li>
+</ul><?php else : ?><style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;}</style><ul class="nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a class="active" href="">Members</a></li></ul><?php endif; ?><div class="content">
+<?php if(isset ($this->groupTitle)) {$title = $this->groupTitle." - Group Members";} else {$title = "Group Members";} echo '<h1>'.$title.'</h1>'; ?>
+<?php if(!is_null ($this->error)) {?><p class="errors"><?php echo $this->error;?></p><?php } ?> <?php if(!is_null ($this->msg)) {?><p class="ok"><?php echo $this->msg; ?></p><?php } ?>
+<?php if(isset ($this->groupMembers)) : ?><table class="vertical-image"><?php foreach($this->groupMembers as $person): ?>
+<tr><th><a href="<?php echo $this->url(array('controller'=>'index','action'=>'person','module'=>'forums','persID'=>$person->id),null,true); ?>"><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id),null,true) ?>" /></a></th><td><a href="<?php echo $this->url(array('controller'=>'index','action'=>'person','module'=>'forums','persID'=>$person->id),null,true); ?>"><b><?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?></b></a><i class="meta"><?php echo $person->status ? $person->status->message ? strlen($person->status->message) > 50 ? '<p>' . $this->escape(substr($person->status->message, 0, 50) . '...') . '</p>' : '<p>' . $this->escape($person->status->message) . '</p>' : '':''?></i> <div class="entry"><?php if($this->role == 1) : ?>
+            Change role:(<a class="entry" href="<?php echo $this->url(array('controller'=>'index','action'=>'admin','module'=>'forums','groupID'=>$this->groupID,'userID'=>$person->getId()),null,true); ?>">Admin | </a><a href="<?php echo $this->url(array('controller'=>'index','action'=>'user','module'=>'forums','groupID'=>$this->groupID,'userID'=>$person->getId()),null,true); ?>">User</a>) &nbsp;<a class="entry" href="<?php echo $this->url(array('controller'=>'index','action'=>'delete','module'=>'forums','groupID'=>$this->groupID,'userID'=>$person->getId(), 'userName'=>$this->escape($person->name ? $person->name->unstructured : $person->username)),null,true); ?>">Delete</a>
+<?php endif; ?></div> </td></tr><?php endforeach; ?></table><?php endif; ?><?php echo $this->groupMembers; ?><?php if(($this->role == 1) || ($this->groupType == 'open')) { ?>
+<a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'friends','module'=>'forums','groupID'=>$this->groupID,'persID'=>$this->persID), null, true); ?>">Invite Members</a>
+<?php } ?><?php if(($this->role != 10)) { ?><a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify Members</a> <?php } ?>
+</div><br/><?php if($this->role == 1) : ?><ul class="bottom-nav"><li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a class="active" href="">Members</a></li><li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Requests</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), 'default', true); ?>">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a class="active" href="">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), 'default', true); ?>">Notify</a></li>
+</ul><?php else : ?><ul class="bottom-nav"><li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID), 'default', true); ?>">Profile</a></li>
+<li><a class="active" href="">Members</a></li></ul><?php endif; ?>

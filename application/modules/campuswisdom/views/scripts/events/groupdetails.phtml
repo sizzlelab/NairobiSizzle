@@ -1,0 +1,60 @@
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="nav" style="">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'mybizads','action'=>'index')) ?>">Create</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">Subscriptions</a></li>
+        <li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'allbusinesses')) ?>">My groups</a></li>
+</div>
+   <div class="content">
+       <div style="float: right;">
+             <?php
+                if($this->join==true)
+                 { ?>
+                     <a style="float: right" href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'allgroups'));?>">Join group </a>
+                        <?php
+                 }
+                 else if($this->is_subscribed==true)
+                 { ?>
+                      <a style="float: right" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'unsubscribetogroup','channel_id'=>$this->channel_id));?>">Unsubscribe</a>
+                     <?php
+                 }
+                 else if($this->not_subscribed==true)
+                 {
+                         ?>
+                      <a style="float: right" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'subscribetogroup','channel_id'=>$this->channel_id));?>">Subscribe to group </a>
+                         <?php
+                } ?>
+       </div>
+     <table>
+        <tr>
+            <th align="left">Group</th>
+            <td><?php echo ucfirst($this->group_details['title']);  ?><td>
+        </tr>
+        <tr>
+            <th align="left">Description</th>
+            <td><?php echo ucfirst($this->group_details['description']); ?></td>
+        </tr>
+        <tr>
+            <th align="left" valign="top">Group type</th>
+            <td><?php echo ucfirst($this->group_details['group_type']); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Members</th>
+            <td><?php  echo ucfirst($this->group_details['number_of_members']); ?></td>
+        </tr>
+        <tr>
+            <th align="left">Created</th>
+            <td><?php echo ucfirst($this->date); ?></td>
+        </tr>
+     </table>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+	<li><a>Maps</a></li>
+</ul>

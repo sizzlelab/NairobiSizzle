@@ -1,0 +1,14 @@
+<style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;} </style><ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller' => 'index', 'action' => 'index', 'module' => 'forums'), 'default', true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li></ul>
+<ul class="nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-group-threads','module'=>'forums'),null,true) ?>">Group</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li></ul>
+<div class="content"><div id="logo"><center><img alt="Online Forums" src="<?php echo $this->baseUrl('/styles/icons/forums/online_forums.png') ?>" /><h1>My Group Discussion</h1></center></div><br/><br/><br/><br/>
+<?php if($this->msg){?><ul class="ok"><li><?php echo $this->msg;?></li></ul><?php }?><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'startthread'));?>">Start a Question</a> <br/><br/><?php //echo $this->title;
+if($this->requests){foreach($this->requests as $requests) { ?>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-thread-details', 'did'=>$requests['id']));?>"><?php echo $requests['title'];?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($requests['replies']==0) {?><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'answer-thread', 'qnid'=>$requests['id']));?>"><?php echo 'Post first Answer';?></a><?php }else if($requests['replies']>0 && $requests['replies']<=4) {echo $this->action('get-thread-answers','thread','forums',array('threadid'=>$requests['id'])); ?><?php }else if($requests['replies']>3) {?><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-thread-answers', 'threadid'=>$requests['id']));?>"><?php echo 'View all '.$requests['replies'].' answers';?><?php } ?></a></li>
+<br/><?php }?><a href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Back</a>
+<?php }else{?> <ul class="errors"><li><?php echo $this->error;?></li></ul>
+<?php } echo $this->requests;?></div>
+<ul class="bottom-nav"><li><a class="active" href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-group-threads','module'=>'forums'),null,true) ?>">Group</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li></ul>

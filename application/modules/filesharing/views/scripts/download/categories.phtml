@@ -1,0 +1,26 @@
+<style type="text/css">
+.nav li {width:50%;}
+</style>
+<ul class="tabs">
+<li><a href="/Sizzle/public/">Home</a></li>
+<li><a class="active-nav">File sharing</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout')); ?>">Logout</a></li>
+</ul>
+<ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'index')); ?>">Downloads</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'index','action'=>'register')); ?>">Uploads</a></li>
+</ul>
+<div class="content">
+<p><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'list-movies'));?>"><b>+</b>Movie Clips</a><br>
+<p><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'list-music'));?>"><b>+</b>Music</a><br>
+<p><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'list-pictures'));?>"><b>+</b>Pictures</a>
+<p><a href="<?php echo $this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'categories'));?>"><b>-</b>Documents</a>
+
+<?php //Zend_Debug::dump($this->all);?>
+<?php if(!empty($this->all)) {foreach($this->all as $all) : ?>
+<p><?php echo "<a href='" .$this->url(array('module'=>'filesharing','controller'=>'Download','action'=>'download'))."'><li>".$all['name']."</li></a>"; ?></p>
+<?php
+endforeach;
+}
+else{echo '<p class="errors">No Documents found</p>';}?>
+</div>

@@ -1,0 +1,29 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index')) ?>">Routes</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index')) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes')) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index')) ?>">All</a></li>
+</ul>
+<div class="content">
+<?php if ($this->route): ?>
+<h1><?php echo $this->escape($this->route->getName()) ?>'s subscribers</h1>
+<?php endif; if ($this->subscribers): ?>
+<table class="vertical-image">
+<?php foreach($this->subscribers as $person): ?>
+<tr><th><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id), null, true) ?>"><img alt="<?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id), null, true) ?>" /></a></th><td><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'profile', 'action' => 'basic-info', 'id' => $person->id), null, true) ?>"><?php echo $this->escape($person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username)?></a><?php echo $person->status ? $person->status->message ? strlen($person->status->message) > 50 ? '<p>' . $this->escape(substr($person->status->message, 0, 50) . '...') . '</p>' : '<p>' . $this->escape($person->status->message) . '</p>' : '' : '' ?><div><?php if ($person->connection == 'none'): ?><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'friends', 'action' => 'add', 'id' => $person->id, 'names' => $person->name ? trim($person->name->unstructured) ? $person->name->unstructured : $person->username : $person->username, 'page' => $this->page), null, true) ?>"><img alt="Add friend" src="<?php echo $this->baseUrl('/styles/icons/16/user_add.png') ?>" /></a><?php else: ?><span class="meta"><?php echo $person->connection ?></span><?php endif ?></div></td></tr>
+<?php endforeach ?>
+</table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml', array('itemName' => 'subscribers')); else: ?>
+<p class="errors">There are no users subscribed to this route.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index')) ?>">Subscribed</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'mine')) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index')) ?>">All</a></li>
+</ul>

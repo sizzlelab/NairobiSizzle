@@ -1,0 +1,26 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style><ul class="tabs"><li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php  echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'index'));?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'));?>">Logout</a></li>
+</ul><ul class="nav"><li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+<li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+</ul>
+<div class="content"><center><h1>Selected experience details</h1></center>
+<?php $jobfield= $this->jobfield;?>
+<center><a href="<?php echo $this->url(array('controller'=>'index','action'=>'reviewexperiences','jobfield'=>$jobfield));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/back.png') ?>" />    Back to List</a></center>
+<?php foreach($this->data as $data):?><table><tr><th>Company</th><th>Date Shared</th><th>Shared by</th></tr>
+<tr><td><?php echo $data['company']; ?></td><td><?php echo $data['dateposted']; ?></td><td> <?php echo $data['postedby']; ?></td></tr>
+<?php endforeach; ?></table><table>       
+<?php foreach($this->data as $data):?><tr bgcolor="#ccccdc"><th>Company  </th></tr><tr><td> <?php echo $data['company'] ;?> </td></tr>
+<tr bgcolor="#ccccdc"><th>Job Description</th></tr><tr><td> <?php echo $data['jobdescription'] ;?> </td></tr><tr bgcolor="#ccccdc"><th>Experience</th></tr><tr><td> <?php echo $data['experience']; ?>  </td></tr>
+<?php endforeach; ?></table><center><a href="<?php echo $this->url(array('controller'=>'index','action'=>'reviewexperiences','jobfield'=>$jobfield));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/back.png') ?>" />    Back to List</a></center></div>
+<ul class="bottom-nav">
+     <li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+     <li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+
+</ul>

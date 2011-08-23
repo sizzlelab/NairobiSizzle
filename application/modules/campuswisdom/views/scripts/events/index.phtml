@@ -1,0 +1,94 @@
+
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li,.bottom-nav li {width: 33%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url() ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'login','action'=>'logout')) ?>">Logout</a></li>
+</ul>
+<div class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'addevent')) ?>">Create</a></li>
+        <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'index')) ?>">Groups</a></li>
+</div>
+<div class="content">
+    <?php echo "<h1 style='margin-left: 20%;'>".$this->title."</h1>"; ?>
+<?php
+    if(isset($this->message))
+     {
+        echo "<div class='ok'>".$this->message."</div>";
+     }
+    if(!empty($this->events))
+    {
+        foreach($this->events as $events)
+        {
+            ?>
+                <table>
+                    <tr>
+                        <th align="left">Group</th>
+                        <td><?php echo ucfirst($events['group']); ?></td>
+                    </tr>
+                    <tr>
+                        <th align="left">Event</th>
+                        <td><?php echo ucfirst($events['event_name']); ?></td>
+                    </tr>
+                    <tr>
+                        <th align="left" valign="top">Description</th>
+                        <td><?php echo ucfirst(substr($events['description'],0,30)."..."); ?></td>
+                    </tr>
+                    <tr>
+                        <th align="left" valign="top">Charges</th>
+                        <td><?php echo $events['event_charges']; ?><a style="float: right" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'vieweventsdetails','event_id'=>$events['id']));?>"><img alt="edit a field" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                   <?php if($events['isMember']==TRUE) {
+                        //a little logic. This contravenes the idea of MVC a little bit.
+                        echo '<div style="margin-left:2%;margin-top:0%;">';
+                       $rsvp=new campuswisdom_Model_DbTable_Event();
+                        try{
+                          $hasRSVP=$rsvp->hasRSVPed($this->appid,$events['id'],$this->personid);
+                        }catch(Exception $e){
+                             //echo nothing
+                        }
+                        if($hasRSVP==False){
+                        ?>
+                   <a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'rsvp','event_id'=>$events['id'])) ?>">| RSVP to this event |</a>
+                   <?php } 
+                   else{
+                        ?>
+               
+                <?php echo $hasRSVP['msg']; ?>
+                 <a class="icon" href="<?php echo $this->url(array('module' => 'campuswisdom', 'controller' => 'events', 'action' => 'editrsvp','id'=>$hasRSVP['id'],'event_id'=>$events['id']), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a>
+             
+                   <?php
+                   }
+                   echo '</div>';
+                   }?>
+                </td> </tr>
+               </table>
+    <hr style="height: 1%">
+<?php
+        }
+        echo $this->events;
+    }
+    else
+    {
+        echo "<div class='ok'>There no events currently</div>";
+    } ?>
+</div>
+<div class="tips">
+   <?php  if(!empty($this->events)){ ?>
+    Click on <img alt="edit a field" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /> to view an event details
+    <?php } ?>
+    <br/>Only a Group owner/admin can create an event
+    <br/>To create a group click on <a href="<?php echo $this->url(array('module'=>'default','controller'=>'group','action'=>'index')) ?>">Groups</a>
+    <br/>To create an event click on <a href="<?php echo $this->url(array('controller'=>'events','action'=>'addevent')) ?>">Create</a>
+</div>
+<ul class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'events','action'=>'index')) ?>">Events</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index','action'=>'bizads')) ?>">Ads</a></li>
+</ul>

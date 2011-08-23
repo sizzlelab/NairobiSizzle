@@ -1,0 +1,29 @@
+<style type="text/css">
+	.nav li {width: 33%}
+    .bottom-nav li{width: 33%;}
+</style>
+<?php include "menu.phtml";?>
+<div class="content">
+    <img  alt="Campus Life" class="framed" height="24" src="<?php echo $this->baseUrl('/styles/icons/16/Campus.png')?>" width="24"/>
+<span style="display: inline-block;width:auto"><h1>Experiences</h1></span>
+<?php if(isset ($this->form)){echo $this->form; }?>
+    <?php if ($this->ans){ ?>
+    <div class="errors">
+        <?php echo $this->ans; }?></div>
+<?php if (!empty($this->Filts)) {
+    foreach ($this->Filts as $result): ?>
+        <table class="vertical"><h2><?php echo $result['Name'] ?></h2>
+    <p><?php echo $result['Views'] ?></p> <p class="meta">
+        <a class="icon" href="<?php echo $this->url(array('action' => 'viewcomments', 'controller' => 'exps', 'module' => 'campuswisdom', 'expid' => $result['ExpId'])) ?>"><img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png')?>" /></a>
+<a class="icon" href="<?php echo $this->url(array('controller' => 'exps', 'action' => 'comment', 'module' => 'campuswisdom', 'expid' => $result['ExpId'])) ?>"><img alt="Comment" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /></a></p></table>
+<?php endforeach;
+    echo $this->Filts;
+    } ?></div><div class="tips">
+    <a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'exps','action'=>'experiences')) ?>">+experience</a> To share an Experience<br>
+	<a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'getexperiences')) ?>">View</a> To view a shared Experience
+       <br> <img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comments.png')?>" /> To view all comments
+       <img alt="Comments" src="<?php echo $this->baseUrl('/styles/icons/16/comment_add.png')?>" /> To add a comment</div>
+<div class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'exps','action'=>'index')) ?>">Experiences</a></li>
+	<li><a>Maps</a></li></div>

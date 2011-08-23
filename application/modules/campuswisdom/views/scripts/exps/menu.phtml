@@ -1,0 +1,10 @@
+<style type="text/css">
+	.nav li {width:33%;}
+</style><ul class="tabs">
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'index')) ?>">Wisdom</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index')) ?>">Logout</a></li>
+</ul><ul class="nav">
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'namedetails')) ?>">Experiences</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'exps','action'=>'experiences')) ?>">+Experience</a></li>
+	<li><a href="<?php echo $this->url(array('module'=>'campuswisdom','controller'=>'experiences','action'=>'getexperiences')) ?>">View</a></li></ul>

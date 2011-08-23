@@ -1,0 +1,23 @@
+<style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 33%;}
+    .bottom-nav li{width: 33%;}
+</style><ul class="tabs"><li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php  echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'index'));?>">Yearbook</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'));?>">Logout</a></li>
+</ul><ul class="nav"><li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+<li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+<li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+</ul><div class="content"><center><h1>Job Experiences </h1></center><table><tr><td><img alt="experiences" align="left" src="<?php echo $this->baseUrl('/styles/icons/exp.jpg') ?>" /></td>
+<td><div class="tips">Having a job experience you'd like to share ?..Speak it out to all!</div></td></tr></table><table ><tr>
+<td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'shareexperience'));?>">Share job experiences</a></td>
+<td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'shareexperience'));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td>
+<td>| <a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'getjobexperiences'));?>">Available experiences</a></td>
+<td><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'getjobexperiences'));?>"><img alt="go" src="<?php echo $this->baseUrl('/styles/icons/16/next.png') ?>" /></a></td></tr></table>
+<div class="tips">Click 'Share Job Experience' to share your experience in a certain field or 'Available Experiences' to view what others had to say.</div>
+</div><ul class="bottom-nav">
+     <li><a  href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'jobsmenu'));?> ">Jobs</a></li>
+     <li><a class="active"href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'expmenu'));?>">Experiences</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'Yearbook','controller'=>'index','action'=>'tipsmenu'));?>">Tips</a></li>
+
+</ul>

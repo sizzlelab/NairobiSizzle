@@ -1,0 +1,77 @@
+<style type="text/css">.tabs li {width: 50%}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'help', 'action' => 'index')) ?>">Help</a></li>
+</ul>
+<div class="content">
+<h1 id="top">Help</h1>
+<p><b>Note:</b> This page contains information to help you use the Nairobi Sizzle services. For information about Nairobi Sizzle &trade;, visit the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'about-us', 'action' => 'index'), null, true) ?>">about Nairobi Sizzle page.</a></p>
+<h2>Contents</h2>
+<ol>
+<li><a href="#first">First things first: Why just mobile?</a></li>
+<li><a href="#creating_account">Creating an account</a></li>
+<li><a href="#logging_in">Logging in into your account</a></li>
+<li><a href="#logging_out">Logging out from your account</a></li>
+<li><a href="#maintaining_profile">Maintaining your profile</a></li>
+<ul>
+<li><a href="#editing_information">Editing your information</a></li>
+<li><a href="#updating_status">Updating your status</a></li>
+<li><a href="#login_settings">Changing your login settings</a></li>
+<li><a href="#privacy_settings">Changing your privacy settings</a></li>
+<li><a href="#customizing">Customizing the Nairobi Sizzle &trade; theme</a></li>
+</ul>
+<li><a href="#inviting_friends">Inviting friends</a></li>
+<li><a href="#making_friends">Making friends</a></li>
+</ol>
+<h2 id="first">1. First things first: Why just mobile?</h2>
+<p>Nairobi Sizzle is currently developed for use on mobile devices; development of the desktop version is currently in progress.</p>
+<p>However, this will not stop you from accessing any of the features that will be available on the desktop version.</p>
+<p>To minimize on the content that is displayed on your mobile device's screen, we use small (and highly optimized) descriptive icons. In lieu of this, we recommend that you enable images on your browser's settings.</p>
+<p>However, if you need to have your pages display faster (and can get by with a little less beauty!), you may go ahead and disable images on your browser's settings.</p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="creating_account">2. Creating an account</h2>
+<p>To start using the Nairobi Sizzle &trade; service, you need to create an account that we will identify you with.</p>
+<p>To create an account, you will need a unique username, unique email and a password to log in into your account with. It's very important that you keep this information confidential and that you use details that you can easily remember!</p>
+<p>Creating an account is absolutely free. To create an account now, go to the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'sign-up', 'action' => 'index'), null, true) ?>">sign up page.</a></p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="logging_in">3. Logging in into your account</h2>
+<p>Once you have an account, you will have access to all our services. These services can be accessed right from the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">home page.</a></p>
+<p>The next time you visit Nairobi Sizzle, you will need to login with your username and password. If however you are using your personal phone, you may check 'Remember me for a month' when loggin in (on the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'index'), null, true) ?>">login page</a>) to avoid having to login each time you visit.</p>
+<p>In case you forgot your password, you may request a new password on the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'index'), null, true) ?>">login page</a>. A new password is sent to the email you provided us when <a href="#getting_started">creating an account.</a></p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="logging_out">4. Logging out from your account</h2>
+<p>After you have logged in, you may log out from your account any time by clicking on this icon (<img alt="Logout" src="<?php echo $this->baseUrl('/styles/icons/16/user_remove.png') ?>" />) located on the top right corner of your screen.</p>
+<p>You can also click on the logout tab from <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">your profile page.</a></p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="maintaining_profile">5. Maintaining your profile</h2>
+<p>With an account, you automatically have a Nairobi Sizzle profile (and you automatically become one of the Nairobi Sizzle people!).</p>
+<p>Maintaining your profile is done from <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">your profile page</a> and involves the following:</p>
+<h3 id="editing_information">5.1. Editing your information</h3>
+<p><b>By the way,</b> whenever you see this icon (<img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" />), that means you can edit stuff.</p>
+<p>There are three kinds of information that you can edit:</p>
+<ol>
+<li>Basic Information - Your names, gender and about me.</li>
+<li>Contact Information - Your current location, phone number, postal address, Facebook profile link, Twitter profile link and blog/website link. For security reasons your email address is not part of this list; however, this will change once the <a href="#privacy_settings">privacy settings</a> feature is implemented.</li>
+<li>Course Information - The course you are undertaking and your year of graduation.</li>
+</ol>
+<p><a href="#top">Back to top</a></p>
+<h3 id="updating_status">5.2. Updating your status</h3>
+<p>This allows you to let people know what/where/how you are doing using a short descriptive status message. Once you update your status other people will view it when they <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'view-full-info'), null, true) ?>">visit your profile.</a></p>
+<p><a href="#top">Back to top</a></p>
+<h3 id="login_settings">5.3. Changing your login settings</h3>
+<p>You may edit your account settings (username, email and password) once you are logged in into your account. This can be done from the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings'), null, true) ?>">account settings page.</a></p>
+<p><a href="#top">Back to top</a></p>
+<h3 id="privacy_settings">5.4. Changing your privacy settings</h3>
+<p>This feature is currently under development. It will allow you to filter who can view your information.</p>
+<p><a href="#top">Back to top</a></p>
+<h3 id="customizing">5.5. Customizing the Nairobi Sizzle &trade; theme</h3>
+<p>This feature is currently under development. It will allow you to customize the look of Nairobi Sizzle on your mobile phone.</p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="inviting_friends">6. Inviting friends</h2>
+<p>This feature is currently under development. It will allow you to send out invitations to your friends, via Email, SMS, or other social networks, to join your network on Nairobi Sizzle.</p>
+<p><a href="#top">Back to top</a></p>
+<h2 id="making_friends">7. Making friends</h2>
+<p>Making friends is an easy, two-step process. 1. Find the person you want to be friends with on the <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index'), null, true) ?>">people page</a> and send them a friendship request. 2. When that person logs into their account, they can then accept your request.</p>
+<p>Once you are friends with someone you can then invite them to services that you use.</p>
+<p><a href="#top">Back to top</a></p>
+</div>

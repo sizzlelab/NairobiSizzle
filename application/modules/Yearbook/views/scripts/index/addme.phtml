@@ -1,0 +1,31 @@
+ <style type="text/css">
+    .bottom-nav li {width: 50%;}
+</style>
+<?php include 'menu.phtml';?>
+ <div style="font-weight: bold">
+</div>
+<div class="content">
+    <?php if ($this->message){
+    echo '<p class="ok">'.$this->message.'</p>';
+    }
+    ?>
+    <?php if ($this->error){ ?>
+    <ul class="errors">
+        <li><?php echo $this->error ?></li>
+    </ul>
+    <?php }
+    ?>
+    <img  alt="Add me" class="framed" height="24" src="<?php echo $this->baseUrl('/styles/icons/addusers.png')?>" width="24"/>
+<span style="display: inline-block;width:auto"><h1>Add yourself to a class:</h1></span>
+<?php
+echo $this->form ;
+?>
+    </div>
+<div class="tips">
+	Year entered refers to the graduation year.
+       <p> You can only be added to a class once.</p>
+</div>
+<div class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('action' => 'list')) ?>">Class list</a></li>
+    <li><a href="<?php echo $this->url(array('action' => 'jobsmenu')) ?>">Job network</a></li>
+</div>

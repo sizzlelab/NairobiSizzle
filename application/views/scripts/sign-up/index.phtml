@@ -1,0 +1,17 @@
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Home</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'index'), null, true) ?>">Login</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'sign-up', 'action' => 'index'), null, true) ?>">Sign Up</a></li>
+</ul>
+<div class="content">
+<?php if ($this->isUserLogged && !$this->form): ?>
+<p class="errors">You must logout before another user can sign up!</p>
+<p><a class="button" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout'), null, true) ?>">Logout Now</a></p>
+<?php endif; if($this->errors): ?>
+<ul class="errors">
+<?php foreach ($this->errors as $error): ?>
+<li><?php echo $error ?></li>
+<?php endforeach ?>
+</ul>
+<?php endif; echo $this->form ?>
+</div>

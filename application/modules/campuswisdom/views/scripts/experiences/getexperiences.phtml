@@ -1,0 +1,20 @@
+<style type="text/css">
+    .bottom-nav li{width: 33%;}
+</style>
+<?php include 'menu.phtml';?>
+<div class="content"><img  alt="Campus Life" class="framed" height="24" src="<?php echo $this->baseUrl('/styles/icons/16/Campus.png')?>" width="24"/>
+<span style="display: inline-block;width:auto"><h1>View Experience</h1></span>
+<?php echo $this->form;?>
+<?php if ($this->ans){ ?>
+    <div class="errors">
+        <?php echo $this->ans; }?></div>
+<?php if (!empty($this->results)) {
+    foreach ($this->results as $result):?>
+        <li><p class="meta"> <a href="<?php echo $this->url(array('controller' => 'experiences', 'action' => 'title-details', 'module' => 'campuswisdom', 'name' => $result['Name'])); ?>">
+<?php echo $this->escape($result['Name']); ?> </a></p></li>
+<?php endforeach;
+    } ?></div>
+<div class="bottom-nav">
+	<li><a href="<?php echo $this->url(array('controller'=>'events','action'=>'index')) ?>">Events</a></li>
+	<li><a href="<?php echo $this->url(array('controller'=>'exps','action'=>'index')) ?>">Experiences</a></li>
+	<li><a>Maps</a></li></div>

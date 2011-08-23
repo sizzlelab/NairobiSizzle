@@ -1,0 +1,48 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'people', 'action' => 'index')) ?>">People</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+</ul>
+<div class="content">
+<h1>Settings</h1>
+<?php if ($this->usernameUpdated): ?>
+<p class="ok">Username updated</p>
+<?php endif; if ($this->passwordUpdated): ?>
+<p class="ok">Password updated</p>
+<?php endif; if ($this->emailUpdated): ?>
+<p class="ok">Email updated</p>
+<?php endif; if ($this->errors): ?>
+<ul class="errors">
+<?php foreach($this->errors as $error): ?>
+<li><?php echo $error ?></li>
+<?php endforeach ?>
+</ul>
+<?php endif ?>
+<?php if ($this->person): $person = $this->person ?>
+<table class="vertical">
+<tr><th>Username:</th><td><?php echo $this->escape($person->username) ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-username'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a></td></tr>
+<tr><th>Password:</th><td>******<br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-password'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a></td></tr>
+<tr><th>Email:</th><td><?php echo $this->escape($person->email) ?><br /><a class="icon" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'edit-email'), null, true) ?>"><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>"</a></td></tr>
+</table>
+<div class="tips"><p>Last updated: <?php echo $this->escape(Application_Model_Date::relativeTime($person->updated_at)) ?></p><p><img alt="edit" src="<?php echo $this->baseUrl('/styles/icons/16/edit.png') ?>" /> - Edit a field <img alt="delete" src="<?php echo $this->baseUrl('/styles/icons/16/delete.png') ?>" /> - Clear a field</p></div>
+<?php else: ?>
+<p class="errors">An error occurred and your profile could not be retrieved. Please try again later.</p>
+<?php endif ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Basic</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'contact-info')) ?>">Contact</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'course-info')) ?>">Course</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'status')) ?>">Status</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'settings')) ?>">Settings</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout')) ?>">Logout</a></li>
+</ul>

@@ -1,0 +1,34 @@
+<ul class="tabs"><li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),'default',true) ?>">Forums</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul><?php if($this->role == 1) : ?><style type="text/css"> .nav li{width: 25%;} .bottom-nav li{width: 25%;}</style><ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Requests</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><style type="text/css"> .nav li{width: 33%;} .bottom-nav li{width: 33%;}</style><ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php else : ?><style type="text/css"> .nav li{width: 50%;} .bottom-nav li{width: 50%;}</style><ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+</ul><?php endif; ?><div class="content"><?php if(isset ($this->ferror)) { ?><p class="errors"><?php echo $this->ferror; ?></p><?php }?> <?php if(isset ($this->perror)) : ?><p class="errors"><?php echo $this->perror;?><</p><?php endif; ?>
+<?php if (count($this->paginator)) : ?><h1>My Friends</h1><table class="vertical-image"><?php foreach($this->paginator as $person): ?>
+<tr><th><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id), null, true) ?>" /></th><td><b><?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?></b><div><a class="icon" href="<?php echo $this->url(array('controller'=>'index','action'=>'invite','module'=>'forums','userID'=>$person->getId(),'username'=>$person->getUsername(),'groupID'=>$this->groupID), 'default', true); ?>"><img alt="Invite" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /></a></div></td></tr>
+<?php endforeach ?></table><?php else : ?><p>No friends to display</p><?php endif; ?><?php echo $this->paginator; ?><br/><hr/><h1>Person Search</h1>
+<?php echo $this->form; ?><?php if(isset ($this->people)) : ?><?php if(count ($this->people)) : ?><table class="vertical-image"><?php foreach($this->people as $person): ?>
+<tr><th><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?>'s avatar" class="framed" src="<?php echo $this->url(array('module' => 'default', 'controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id), null, true) ?>" /></th><td><b><?php echo $this->escape($person->name ? $person->name->unstructured : $person->username)?></b><div><a class="icon" href="<?php echo $this->url(array('controller'=>'index','action'=>'invite','module'=>'forums','userID'=>$person->getId(),'username'=>$person->getUsername(),'groupID'=>$this->groupID), 'default', true); ?>"><img alt="Invite" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /></a></div></td></tr>
+<?php endforeach ?></table> <?php echo $this->people; ?><?php endif; ?><?php endif; ?></div><div class="tips"><p><img alt="Invite" src="<?php echo $this->baseUrl('/styles/icons/16/add.png') ?>" /> - Invite </p></div>
+<?php if($this->role == 1) : ?><ul class="bottom-nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'requests','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Requests</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php elseif($this->role == 0) : ?><ul class="bottom-nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'notify','module'=>'forums','groupID'=>$this->groupID), null, true); ?>">Notify</a></li>
+</ul><?php else : ?><ul class="bottom-nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'profile','module'=>'forums','id'=>$this->groupID,), null, true); ?>">Profile</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'index','action'=>'members','module'=>'forums','id'=>$this->groupID,'title'=>$this->group['title']), null, true); ?>">Members</a></li></ul><?php endif; ?>

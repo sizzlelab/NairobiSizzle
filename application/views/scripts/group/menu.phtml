@@ -1,0 +1,14 @@
+ <style type="text/css">
+    /*override global nav settings*/
+    .nav li {width: 30%;}
+</style>
+<ul class="tabs">
+    <li><a href="<?php echo $this->url(array('controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+    <li><a class="active-nav" href="<?php echo $this->url(array('controller' => 'group', 'action' => 'index')) ?>">Groups</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+</ul>
+<ul class="nav">
+     <li><a href="<?php echo $this->url(array(  'action' => 'creategroup')) ?>">Create</a></li>
+    <li><a href="<?php echo $this->url(array(  'action' => 'index')) ?>">My Groups</a></li>
+    <li><a href="<?php echo $this->url(array('action' => 'allgroups')) ?>">Other Groups</a></li>
+</ul>

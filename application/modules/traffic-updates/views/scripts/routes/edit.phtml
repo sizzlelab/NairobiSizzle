@@ -1,0 +1,22 @@
+<style type="text/css">.nav li, .bottom-nav li {width: 33%;}</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Routes</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index'), null, true) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>
+<div class="content">
+<h2>Edit route</h2>
+<?php if ($this->errors): ?>
+<ul class="errors"><?php foreach($this->errors as $error): ?><li><?php echo $error ?></li><?php endforeach ?></ul>
+<?php endif; if ($this->form) echo $this->form ?>
+</div>
+<ul class="bottom-nav">
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'index', 'action' => 'index'), null, true) ?>">Subscribed</a></li>
+<li><a class="active" href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'my-routes'), null, true) ?>">Mine</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'traffic-updates', 'controller' => 'routes', 'action' => 'index'), null, true) ?>">All</a></li>
+</ul>

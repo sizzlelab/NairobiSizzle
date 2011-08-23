@@ -1,0 +1,51 @@
+
+<style type="text/css">
+.nav li{width: 33%;}
+</style>
+<ul class="tabs">
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'controller' => 'index', 'action' => 'index')) ?>">Home</a></li>
+<li><a class="active-nav" href="<?php echo $this->url(array('controller'=>'events','action'=>'index','module'=>'campuswisdom'),'default',true) ?>">Events</a></li>
+<li><a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'person', 'action' => 'index')) ?>">Profile</a></li>
+</ul>
+<ul class="nav">
+<li><a class="active" href="<?php echo $this->url(array('controller'=>'index','action'=>'index','module'=>'forums'),null,true) ?>">Groups</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Private</a></li>
+<li><a href="<?php echo $this->url(array('controller'=>'thread','action'=>'get-public-threads','module'=>'forums'),null,true) ?>">Public</a></li>
+</ul>
+<div class="content">
+    <h1>My Groups</h1>
+    <a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'new','module'=>'forums'), 'default', true); ?>">Create</a>
+    <a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'allgroups','module'=>'forums'), null, true); ?>">Search</a>
+    <a class="button" href="<?php echo $this->url(array('controller'=>'index','action'=>'available-groups','module'=>'forums'), null, true); ?>">All Group</a>
+<?php
+if (isset($this->message)) : ?>
+<p class="ok"><?php if(!is_null($this->msg)) echo $this->msg; $this->msg = null;?></p>
+<?php endif; ?>
+<?php
+if(isset ($this->error)) { ?>
+<p class="errors"><?php echo $this->error; ?><p>
+<?php }?>
+<?php if ($this->groups) : ?>
+<table class="vertical-image">
+<?php foreach ($this->groups as $myGroup): ?>
+    <tr>
+        <th>
+            <?php if ($myGroup[0]->getGroupType() == 'closed') : ?>
+            <a href="<?php echo $this->url(array('controller'=>'group', 'action'=>'viewgroup', 'module'=>'default', 'group_id'=>$myGroup[0]->id), 'default', true);?>"><img alt="Group" src="<?php echo $this->baseUrl('/styles/icons/forums/closed.jpg') ?>"></a>
+            <?php else : ?>
+            <a href="<?php echo $this->url(array('controller'=>'group', 'action'=>'viewgroup', 'module'=>'default', 'group_id'=>$myGroup[0]->id), 'default', true);?>"><img alt="Group" src="<?php echo $this->baseUrl('/styles/icons/forums/group.jpg') ?>"></a>
+            <?php endif; ?>
+        </th>
+        <td>
+            <b><?php echo $myGroup[0]->getTitle(); ?></b>
+            <div class="entry">
+                <?php echo $myGroup[0]->getDescription() ? strlen($myGroup[0]->getDescription()) > 50 ? '<p>' . $this->escape(substr($myGroup[0]->getDescription(), 0, 50) . '...') . '</p>' : '<p>'. $this->escape($myGroup[0]->getDescription()) . '</p>' : '' ?>
+            <p class="meta"><a href="<?php echo $this->url(array('controller'=>'group', 'action'=>'viewgroup', 'module'=>'default', 'group_id'=>$myGroup[0]->id), 'default', true);?>"> Members: <span class="meta"><?php echo $myGroup[0]->getNumberOfMembers(); ?></span></a></p>
+            <p class="meta"> <a href="<?php echo $this->url(array('controller'=>'group', 'action'=>'viewgroup', 'module'=>'default', 'group_id'=>$myGroup[0]->id), 'default', true);?>">Upcoming events: <span class="meta"><?php echo $myGroup[1]; ?></span></a></p>
+            </div>
+        </td>
+    </tr>
+<?php endforeach ?>
+</table>
+<?php endif; echo $this->groups; ?>
+</div>

@@ -1,0 +1,32 @@
+<?php include 'menu.phtml'?> 
+<div class="content">
+        <?php if ($this->message){
+    echo '<p class="ok">'.$this->message.'</p>';
+    }
+    ?>
+    <?php if ($this->error){ ?>
+    <ul class="errors">
+         <?php echo $this->error ?> 
+    </ul>
+    <?php } ?>
+       <?php if (!empty ($this->groups)) {?>
+      <table>
+          <tr>
+            <th>Group</th>
+            <th>Details</th>
+          </tr>
+        <?php foreach($this->groups as $g): ?>
+          <tr>
+            <td>
+                <?php echo   $this->escape(substr($g->title, 0, 6) ) ; ?>
+             </td>
+             <td>
+              <br /><a class="icon" href="<?php echo $this->url(array('action' => 'viewgroup','group_id'=>$this->escape($g->id))) ?>"><img alt="Go" src="<?php echo $this->baseUrl('styles/icons/16/next.png') ?>" /></a>
+            </td>
+        </tr>
+        <?php endforeach ?>
+    </table>
+
+      <?php  } echo $this->groups;   ?>
+</div>
+<?php include 'bottomnav.phtml';?>
