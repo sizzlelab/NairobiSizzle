@@ -86,7 +86,7 @@ BEGIN
                 SET conflict_counter = conflict_counter + 1;
                 INSERT INTO asimerge.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'email', var_person_id, NOW());
                 -- Email conflicts resolution
-                IF var_person_email != 'vilma.lehtinen@hiit.fi' THEN
+                IF var_person_id != 549 THEN
                     -- The othe two (ngei and ndunda), delete their ASI a/cs
                     DELETE FROM asimerge.people WHERE email = var_person_email;
                     -- Then copy over their Nairobi Sizzle a/cs
