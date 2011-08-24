@@ -1,7 +1,3 @@
 .DS_Store
-install.sql
-public/.htaccess
 application/configs/application.ini
 nbproject/
-data/
-public/uploads/
