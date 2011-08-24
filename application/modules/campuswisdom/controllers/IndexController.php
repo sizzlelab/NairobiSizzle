@@ -17,7 +17,7 @@ class Campuswisdom_IndexController extends Zend_Controller_Action
        		$person_id = $session->getUserId();
         if (empty($person_id)) {
             //user is nolonger logged in
-            $this->_helper->redirector('index','login');
+            $this->_helper->redirector('index','login','default');
         }
         else{
              $this->person_id=$person_id;
@@ -28,7 +28,7 @@ class Campuswisdom_IndexController extends Zend_Controller_Action
         if(empty($this->app_id)){
 
              //not logged in. Redirect to logging in page
-             $this->_helper->redirector('index','login');
+             $this->_helper->redirector('index','login','default');
 
         
 
