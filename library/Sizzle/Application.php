@@ -2,6 +2,7 @@
 require_once 'Zend/Application.php';
 
 class Sizzle_Application extends Zend_Application {
+    protected $_environment = "";
     protected $_cacheConfig = false;
     protected $_cacheOptions = array(
         'frontendType'    => 'File',
@@ -18,6 +19,7 @@ class Sizzle_Application extends Zend_Application {
             $this->_cacheOptions = array_merge($this->_cacheOptions, $options['cacheOptions']);
         }
         $options = $options['configFile'];
+        $this->_environment = (string) $environment;
         parent::__construct($environment, $options);
     }
 
@@ -27,21 +29,22 @@ class Sizzle_Application extends Zend_Application {
         }
         require_once 'Zend/Cache.php';
         $cache = Zend_Cache::factory(
-                $this->_cacheOptions['frontendType'],
-                $this->_cacheOptions['backendType'],
-                array_merge(array(
-                    'master_file' => $file,
-                    'automatic_serialization' => true
-                ), $this->_cacheOptions['frontendOptions']),
-                array_merge(array(
-                    'cache_dir' => APPLICATION_PATH . '/../data/cache'
-                ), $this->_cacheOptions['backendOptions'])
-            );
+            $this->_cacheOptions['frontendType'],
+            $this->_cacheOptions['backendType'],
+            array_merge(array(
+                'master_file' => $file,
+                'automatic_serialization' => true
+            ), $this->_cacheOptions['frontendOptions']),
+            array_merge(array(
+                'cache_dir' => APPLICATION_PATH . '/../data/cache'
+            ), $this->_cacheOptions['backendOptions'])
+        );
         $config = $cache->load('Zend_Application_Config');
-        if (!$config) {
-            $config = parent::_loadConfig($file);
+        // if no cached config or cached config is 'outdated'
+        if (!$config || $config->getSectionName() != $this->_environment) {
+            $config = new Zend_Config_Ini($file, $this->_environment);
             $cache->save($config, 'Zend_Application_Config');
         }
-        return $config;
+        return $config->toArray();
     }
 }
