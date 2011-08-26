@@ -1,0 +1,48 @@
+This folder contains some handy scripts for varius uses, as described below:
+
+install.sql
+---------------------------------------------------------------------------------------
+
+You need this to install the NairobiSizzle database. Couple of pointers:
+
+  1. You should probably change the user that the application will use to access
+     the database, on line 2. Just make sure that user doesn't exist beforehand.
+  2. You'll definitely want to change that user's password.
+  3. If you do change the user's credentials remember to change them also on line 7
+  4. You could also change the database name, just make sure that database doesn't 
+     exist as well. You'll also want to edit lines 7 and 9 to reflect this change.
+
+merge_script.sql
+----------------------------------------------------------------------------------------
+
+This script was used to merge two ASI databases, from separate installations. It's
+rather generic, save for a few things here and there:
+
+  1. The database names. Here the source database is called 'asinairobi', the destination
+     db, 'asimerge'. To use this script elsewhere, find and replace these database names
+     appropriately.
+  2. In the people_merge and the clients_merge procedures there are some pretty specific 
+     conflict resolution routines (lines 88-102, 107-121, 176-179). You'd want to comment
+     these lines out or if you have conflicts of your own, edit the routines accordingly.
+
+backup.sh
+----------------------------------------------------------------------------------------- 
+
+Bash script for automating database backups. It's heavily commented to help you figure out
+what's going on and has a handy 'usage'.
+
+gitter.sh
+-----------------------------------------------------------------------------------------
+
+Handy script for automating the process of replacing files that you don't want git to upda-
+te to the repo yet still shouldn't be in the .gitignore file 'cause they should be part of
+the repo.
+This one backs up a .htaccess file before doing a git pull or push. Pointers:
+
+  1. You can add more files to be backed up and replaced with 'dummy' files (well, the files
+     that currently exist in the repo). Do this after lines 18 and 20 and DON'T FORGET to add
+     the 'replacement' command after line 10, this will ensure everything is left to normal
+     after the git operation.
+  2. If you're working on a branch other than master, edit line 33 and if your git origin is not
+     'origin', the edit your git-config or edit the git fetch/merge/push commands in this file 
+     (lines 26, 33 and 69).
