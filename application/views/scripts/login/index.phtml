@@ -2,9 +2,9 @@
     .bottom-nav li {width: 33%;}
 </style>
 <ul class="tabs">
-    <li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
-    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login')) ?>">Login</a></li>
-    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('module'=>'default','controller' => 'login', 'action'=>'index')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'sign-up','action'=>'index')) ?>">Sign Up</a></li>
 </ul>
 <div class="content">
     <?php if ($this->loginRequired): ?>
@@ -32,7 +32,7 @@
     <p><a href="<?php echo $this->url(array('module'=>'default','controller'=>'login', 'action'=>'recoverpassword')) ?>">Forgot your password?</a></p>
 </div>	
 <ul class="bottom-nav">
-    <li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
-    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login')) ?>">Login</a></li>
-    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('module'=>'default','controller' => 'login', 'action'=>'index')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'sign-up','action'=>'index')) ?>">Sign Up</a></li>
 </ul>
