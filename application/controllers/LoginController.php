@@ -132,15 +132,20 @@ class LoginController extends Zend_Controller_Action {
     public function recoverpasswordAction() {
         // action body
         $error = $this->sessionHandle->getSessionParameter('error');
+
         $this->sessionHandle->unsetSessionParameter('error');
+
         if(!empty($error)) {
             $this->view->error = $error;
         }
+
         if($this->sessionHandle->noUserSession()) {
             $form = new Application_Form_Recover();
             $this->view->form = $form;
+
             if($this->getRequest()->isPost()) {
                 $request = $this->getRequest();
+
                 if($form->isValid($request->getPost())) {
                     $data = $form->getValues();
                     $person = new Application_Model_Mapper_Person_PasswordRecovery();
@@ -149,7 +154,7 @@ class LoginController extends Zend_Controller_Action {
                         if($result) {
                             $this->sessionHandle->setSessionParameter('msg', 'A password recovery email has been sent to '.$data['email']);
                             $this->sessionHandle->endSession();
-                            $this->_helper->redirector('index', 'login');
+                            $this->_helper->redirector('index', 'login','default');
                         }else {
                             $client = Application_Model_Client::getInstance();
                             $this->sessionHandle->setSessionParameter('error', $client->getResponseMessage());
@@ -159,9 +164,9 @@ class LoginController extends Zend_Controller_Action {
                         $client = Application_Model_Client::getInstance();
                         $body = $client->getResponseBody();
                         $this->sessionHandle->setSessionParameter('error', $client->getResponseMessage().' '.$body['messages'][0]);
-                        ;
+                        
                         $form->populate($data);
-                        $this->_helper->redirector('recoverpassword', 'login');
+                        $this->_helper->redirector('recoverpassword', 'login','default');
                     }
                 }
             }

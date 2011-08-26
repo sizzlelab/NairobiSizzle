@@ -1,7 +1,7 @@
 <ul class="tabs">
-    <li><a href="<?php echo $this->url(array('controller' => 'index')) ?>">Home</a></li>
-    <li><a class="active" href="<?php echo $this->url(array('controller' => 'login')) ?>">Login</a></li>
-    <li><a href="<?php echo $this->url(array('controller' => 'sign-up')) ?>">Sign Up</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index','action'=>'index')) ?>">Home</a></li>
+    <li><a class="active" href="<?php echo $this->url(array('module'=>'default','controller' => 'login', 'action'=>'index')) ?>">Login</a></li>
+    <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'sign-up','action'=>'index')) ?>">Sign Up</a></li>
 </ul>
 <ul class="bottom-nav">
     <li><a href="<?php echo $this->url(array('module'=>'default','controller' => 'index','action'=>'index')) ?>">Home</a></li>
