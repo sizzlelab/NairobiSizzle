@@ -6,6 +6,8 @@ CREATE DATABASE nairobisizzle CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 GRANT all privileges ON nairobisizzle.* TO 'sizzle'@localhost IDENTIFIED BY 'your_password_here';
 
+USE nairobisizzle;
+
 -- --------------------------------------------------------
 
 --
