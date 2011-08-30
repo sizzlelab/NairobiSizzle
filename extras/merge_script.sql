@@ -28,9 +28,9 @@ BEGIN
         PRIMARY KEY (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
     -- Prepare 'people' table
-    ALTER TABLE commonservices_production.people ADD (source_region VARCHAR(255) DEFAULT 'aalto');
+    -- ALTER TABLE commonservices_production.people ADD (source_installation VARCHAR(255) DEFAULT 'aalto');
     -- End
-    SELECT "Merge tables created, 'people' table updated";
+    SELECT "Merge tables created";
 END $$
 
 
@@ -72,7 +72,7 @@ BEGIN
                     -- No conflicts, insert person
                     INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
                         is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                        birthdate, guid, delta, source_region)
+                        birthdate, guid, delta, source_installation)
                         SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
                             status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
                             FROM asi_nairobi.people WHERE id = var_person_id;
@@ -92,7 +92,7 @@ BEGIN
                     -- Then copy over their Nairobi Sizzle a/cs
                     INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
                         is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                        birthdate, guid, delta, source_region)
+                        birthdate, guid, delta, source_installation)
                         SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
                             status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
                             FROM asi_nairobi.people WHERE id = var_person_id;
@@ -112,7 +112,7 @@ BEGIN
             END IF;
             INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
                 is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                birthdate, guid, delta, source_region)
+                birthdate, guid, delta, source_installation)
                 SELECT var_person_username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
                     status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
                     FROM asi_nairobi.people WHERE id = var_person_id;
