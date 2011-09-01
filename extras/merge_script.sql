@@ -49,8 +49,97 @@ BEGIN
     -- Declare variables used just for cursor and loop control
     DECLARE current_row INT DEFAULT 0;
     DECLARE num_rows INT DEFAULT 0;
-    -- Declare the poeple cursor
+    -- Declare cursors
+    DECLARE email_conflicts_cursor CURSOR FOR
+        SELECT id, email FROM asi_nairobi.people
+        WHERE email IN (SELECT email FROM commonservices_production.people);
+    DECLARE username_conflicts CURSOR FOR
+        SELECT id, username FROM asi_nairobi.people
+        WHERE username IN (SELECT username FROM commonservices_production.people);
     DECLARE people_cursor CURSOR FOR SELECT id FROM asi_nairobi.people;
+
+    -- Open email conflicts cursor
+    OPEN email_conflicts_cursor;
+    SELECT FOUND_ROWS() INTO num_rows;
+    SELECT num_rows, "email conflicts found, resolving...";
+    -- Start loop
+    email_conflicts_loop: LOOP
+        -- If no more rows, exit loop
+        IF current_row >= num_rows THEN
+            CLOSE email_conflicts_cursor;
+            LEAVE email_conflicts_loop;
+        END IF;
+        -- Fetch person id
+        FETCH email_conflicts_cursor INTO var_person_id, var_person_email;
+        -- For the people with data in main ASI, link to their existing accounts
+        -- IF var_person_id IN (21, 101, )
+        INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at)
+            VALUES ('people', var_person_id, (SELECT id FROM commonservices_production.people WHERE email = var_person_email), NOW());
+        --
+
+        -- Check for and log any person conflicts
+        SELECT email INTO var_person_email FROM asi_nairobi.people WHERE id = var_person_id;
+        SELECT username INTO var_person_username FROM asi_nairobi.people WHERE id = var_person_id;
+        IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = var_person_username) THEN
+            IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE email = var_person_email) THEN
+                IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE guid = (SELECT guid FROM asi_nairobi.people WHERE id = var_person_id)) THEN
+                    -- No conflicts, insert person
+                    INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
+                        is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
+                        birthdate, guid, delta, source_installation)
+                        SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
+                            status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
+                            FROM asi_nairobi.people WHERE id = var_person_id;
+                    -- Tracking
+                    INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
+                ELSE
+                    SET conflict_counter = conflict_counter + 1;
+                    INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'guid', var_person_id, NOW());
+                END IF;
+            ELSE
+                SET conflict_counter = conflict_counter + 1;
+                INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'email', var_person_id, NOW());
+                -- Email conflicts resolution
+                IF var_person_id != 549 THEN
+                    -- The other two, delete their ASI a/cs
+                    DELETE FROM commonservices_production.people WHERE email = var_person_email;
+                    -- Then copy over their Nairobi Sizzle a/cs
+                    INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
+                        is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
+                        birthdate, guid, delta, source_installation)
+                        SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
+                            status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
+                            FROM asi_nairobi.people WHERE id = var_person_id;
+                    -- Tracking
+                    INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
+                    SET resolved_conflicts = resolved_conflicts + 1;
+                END IF;
+            END IF;
+        ELSE
+            SET conflict_counter = conflict_counter + 1;
+            INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'username', var_person_id, NOW());
+            -- Usernames conflict resolution
+            IF EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = CONCAT(var_person_username, '_nairobi')) THEN
+                SET var_person_username = CONCAT(var_person_username, '_nairobi1');
+            ELSE
+                SET var_person_username = CONCAT(var_person_username, '_nairobi');
+            END IF;
+            INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
+                is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
+                birthdate, guid, delta, source_installation)
+                SELECT var_person_username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
+                    status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
+                    FROM asi_nairobi.people WHERE id = var_person_id;
+            -- Tracking
+            INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
+            SET resolved_conflicts = resolved_conflicts + 1;
+        END IF;
+        -- Increment loop counter
+        SET current_row = current_row + 1;
+    -- End loop
+    END LOOP the_loop;
+
+
     -- Open people cursor
     OPEN people_cursor;
     SELECT FOUND_ROWS() INTO num_rows;
