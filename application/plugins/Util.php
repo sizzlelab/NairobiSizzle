@@ -69,83 +69,78 @@ class Application_Plugin_Util extends Zend_Controller_Plugin_Abstract {
      * @return void
      */
     public function preDispatch() {
-
-        $this->getRequest()->setModuleName('default')
-                                ->setControllerName('index')
-                                ->setActionName('index');
-
-//        $request    = $this->getRequest();
-//        $session    = $this->getSession();
-//        $controller = $request->getControllerName();
-//        $module     = $request->getModuleName();
-//        if ($module == 'default') {
-//            //if sign-up, do an app login
-//            if ($controller == 'sign-up') {
-//                //end session
-//                $session->endSession();
-//                //app login
-//                $session->noUserSession();
-//            // check for users whose usernames were changed from the database merge
-//            // links are as such: nairobisizzle.com/login/index/rand/
-//            } elseif ($controller == 'login' && $request->getActionName() == 'index' && $request->getParam("rand")) {
-//                // end any current session, just to be sure
-//                $session->endSession();
-//                // do an app login
-//                $session->noUserSession();
-//                // notify login page
-//                $userIdNamespace = new Zend_Session_Namespace('iserIdNamespace');
-//                $userIdNamespace->change_id = $request->getParam("rand");
-//                // redirect to login page, no need we're
-//                // $request->setModuleName('default')
-//                //        ->setControllerName('login')
-//                //        ->setActionName('index')
-//                //        ->setDispatched(false);
-//            //every other controller, start a user session
-//            } else {
-//                $credentials = new Zend_Session_Namespace('credentials');
-//                $view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
-//                //attempt to start a session
-//                if (!$session->startSession() && empty($credentials->user_id)) {
-//                    //if controller is not an open resource, do a redirect
-//                    if (!in_array($controller, $this->openResources)) {
-//                        //set redirect to
-//                        $session->setSessionParameter('redirect_to', 1);
-//                        $session->setSessionParameter('get_params', $request->getUserParams());
-//                        $session->setSessionParameter('params', $request->getParams());
-//                        //notify view
-//                        $view->loginRequired = true;
-//                        //add a dispatch cycle that redirects to the login page
-//                        $request->setModuleName('default')
-//                                ->setControllerName('login')
-//                                ->setActionName('index')
-//                                ->setDispatched(false);
-//                    }
-//                //else, notify view that user is logged
-//                } else {
-//                    $view->isUserLogged = true;
-//                }
-//            }
-//            //for every other module, start user session
-//        } else {
-//            $credentials = new Zend_Session_Namespace('credentials');
-//            $view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
-//            if(!$session->startSession() && empty($credentials->user_id)) {
-//                //set redirect to
-//                $session->setSessionParameter('redirect_to', 1);
-//                $session->setSessionParameter('get_params', $request->getUserParams());
-//                $session->setSessionParameter('params', $request->getParams());
-//                //notify view
-//                $view->loginRequired = true;
-//                //add a dispatch cycle to the login page
-//                $request->setModuleName('default')
-//                        ->setControllerName('login')
-//                        ->setActionName('index')
-//                        ->setDispatched(false);
-//            } else {
-//                /*if session exists, notify view*/
-//                $view->isUserLogged = true;
-//            }
-//        }
+        $request    = $this->getRequest();
+        $session    = $this->getSession();
+        $controller = $request->getControllerName();
+        $module     = $request->getModuleName();
+        if ($module == 'default') {
+            //if sign-up, do an app login
+            if ($controller == 'sign-up') {
+                //end session
+                $session->endSession();
+                //app login
+                $session->noUserSession();
+            // check for users whose usernames were changed from the database merge
+            // links are as such: nairobisizzle.com/login/index/rand/
+            } elseif ($controller == 'login' && $request->getActionName() == 'index' && $request->getParam("rand")) {
+                // end any current session, just to be sure
+                $session->endSession();
+                // do an app login
+                $session->noUserSession();
+                // notify login page
+                $userIdNamespace = new Zend_Session_Namespace('iserIdNamespace');
+                $userIdNamespace->change_id = $request->getParam("rand");
+                // redirect to login page, no need we're
+                // $request->setModuleName('default')
+                //        ->setControllerName('login')
+                //        ->setActionName('index')
+                //        ->setDispatched(false);
+            //every other controller, start a user session
+            } else {
+                $credentials = new Zend_Session_Namespace('credentials');
+                $view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
+                //attempt to start a session
+                if (!$session->startSession() && empty($credentials->user_id)) {
+                    //if controller is not an open resource, do a redirect
+                    if (!in_array($controller, $this->openResources)) {
+                        //set redirect to
+                        $session->setSessionParameter('redirect_to', 1);
+                        $session->setSessionParameter('get_params', $request->getUserParams());
+                        $session->setSessionParameter('params', $request->getParams());
+                        //notify view
+                        $view->loginRequired = true;
+                        //add a dispatch cycle that redirects to the login page
+                        $request->setModuleName('default')
+                                ->setControllerName('login')
+                                ->setActionName('index')
+                                ->setDispatched(false);
+                    }
+                //else, notify view that user is logged
+                } else {
+                    $view->isUserLogged = true;
+                }
+            }
+            //for every other module, start user session
+        } else {
+            $credentials = new Zend_Session_Namespace('credentials');
+            $view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
+            if(!$session->startSession() && empty($credentials->user_id)) {
+                //set redirect to
+                $session->setSessionParameter('redirect_to', 1);
+                $session->setSessionParameter('get_params', $request->getUserParams());
+                $session->setSessionParameter('params', $request->getParams());
+                //notify view
+                $view->loginRequired = true;
+                //add a dispatch cycle to the login page
+                $request->setModuleName('default')
+                        ->setControllerName('login')
+                        ->setActionName('index')
+                        ->setDispatched(false);
+            } else {
+                /*if session exists, notify view*/
+                $view->isUserLogged = true;
+            }
+        }
     }
 
     /**

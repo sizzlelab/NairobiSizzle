@@ -19,7 +19,7 @@
 <?php endif; endif; endif ?>
 <table class="vertical">
 <tr><td style="width: 30%"><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username) ?>'s avatar" class="framed" src="<?php echo $this->url(array('controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></td><td><h1><?php echo $person->name ? trim($person->name->unstructured) ? $this->escape($person->name->unstructured) : '_______' : '_______' ?></h1></td></tr>
-<?php if ($person->status->message): ?><tr><td class="entry" colspan="2"><?php echo $this->escape($person->status->message) ?><p class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($person->status->changed)) ?></p></td></tr><?php endif ?>
+<?php if ($person->status && $person->status->message): ?><tr><td class="entry" colspan="2"><?php echo $this->escape($person->status->message) ?><p class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($person->status->changed)) ?></p></td></tr><?php endif ?>
 <tr><td colspan="2"><h2>Contact Info</h2></td></tr>
 <tr><th>Current location: </th><td><?php echo $person->location ? $person->location->label ? $this->escape($person->location->label) : '_______' : '_______' ?><?php if ($person->location && $person->location->updated_at): ?><p class="meta">Updated: <?php echo $this->escape(Application_Model_Date::relativeTime($person->location->updated_at)) ?></p><?php endif ?></td></tr>
 <tr><th>Phone: </th><td><?php echo $person->phone_number ? $this->escape($person->phone_number) : '_______' ?></td></tr>

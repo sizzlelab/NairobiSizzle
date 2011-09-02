@@ -2,10 +2,6 @@
 class IndexController extends Zend_Controller_Action {
 
     public function indexAction() {
-
-        /*temporary page*/
-        return $this->render('index-temp');
-
         if ($this->view->isUserLogged) {
             $plugin  = $this->getFrontController()->getPlugin('Application_Plugin_Util');
             $id      = $plugin->getSession()->getUserId();

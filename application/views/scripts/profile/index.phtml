@@ -19,7 +19,7 @@
 <?php endif; endif; endif ?>
 <table class="vertical">
 <tr><td style="width: 30%"><img alt="<?php echo $this->escape($person->name ? $person->name->unstructured : $person->username) ?>'s avatar" class="framed" src="<?php echo $this->url(array('controller' => 'avatar', 'action' => 'small-thumbnail', 'id' => $person->id)) ?>" /></td><td><h1><?php echo $person->name ? trim($person->name->unstructured) ? $this->escape($person->name->unstructured) : '_______' : '_______' ?></h1></td></tr>
-<?php if ($person->status->message): ?><tr><td class="entry" colspan="2"><?php echo $this->escape($person->status->message) ?><p class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($person->status->changed)) ?></p></td></tr><?php endif ?>
+<?php if ($person->status && $person->status->message): ?><tr><td class="entry" colspan="2"><?php echo $this->escape($person->status->message) ?><p class="meta"><?php echo $this->escape(Application_Model_Date::relativeTime($person->status->changed)) ?></p></td></tr><?php endif ?>
 <tr><td colspan="2"><h2>Basic Info</h2></td></tr>
 <tr><th>Gender: </th><td><?php echo $person->gender ? $this->escape(ucfirst(strtolower($person->gender))) : '_______' ?></td></tr>
 <tr><th>Birthday: </th><td><?php if ($person->birthdate) { $date = new Zend_Date($person->birthdate); echo $date->toString('dd MMM Y'); } else { echo '_______'; }?></td></tr>

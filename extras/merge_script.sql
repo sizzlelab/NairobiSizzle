@@ -5,7 +5,7 @@
 DELIMITER $$
 
 DROP PROCEDURE IF EXISTS commonservices_production.merge_prep $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.merge_prep()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.merge_prep()
 BEGIN
     -- Create tracking table
     DROP TABLE IF EXISTS commonservices_production.merge_tracking;
@@ -38,11 +38,10 @@ END $$
 -- ************************************people************************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.people_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.people_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.people_merge()
 BEGIN
     -- Declare variables
     DECLARE var_person_id INT;
-    DECLARE conflict_counter INT DEFAULT 0;
     DECLARE resolved_conflicts INT DEFAULT 0;
     DECLARE var_person_email VARCHAR(255);
     DECLARE var_person_username VARCHAR(255);
@@ -53,15 +52,17 @@ BEGIN
     DECLARE email_conflicts_cursor CURSOR FOR
         SELECT id, email FROM asi_nairobi.people
         WHERE email IN (SELECT email FROM commonservices_production.people);
-    DECLARE username_conflicts CURSOR FOR
-        SELECT id, username FROM asi_nairobi.people
-        WHERE username IN (SELECT username FROM commonservices_production.people);
-    DECLARE people_cursor CURSOR FOR SELECT id FROM asi_nairobi.people;
+    DECLARE username_conflicts_cursor CURSOR FOR
+        SELECT id, username, email FROM asi_nairobi.people
+        WHERE username IN (SELECT username FROM commonservices_production.people)
+        AND email NOT IN (SELECT email FROM commonservices_production.people);
+    DECLARE people_cursor CURSOR FOR SELECT id FROM asi_nairobi.people 
+        WHERE email NOT IN (SELECT email FROM commonservices_production.people);
 
     -- Open email conflicts cursor
     OPEN email_conflicts_cursor;
     SELECT FOUND_ROWS() INTO num_rows;
-    SELECT num_rows, "email conflicts found, resolving...";
+    SELECT num_rows, "email conflicts found, merging with existing data...";
     -- Start loop
     email_conflicts_loop: LOOP
         -- If no more rows, exit loop
@@ -72,77 +73,64 @@ BEGIN
         -- Fetch person id
         FETCH email_conflicts_cursor INTO var_person_id, var_person_email;
         -- For the people with data in main ASI, link to their existing accounts
-        -- IF var_person_id IN (21, 101, )
         INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at)
             VALUES ('people', var_person_id, (SELECT id FROM commonservices_production.people WHERE email = var_person_email), NOW());
-        --
-
-        -- Check for and log any person conflicts
-        SELECT email INTO var_person_email FROM asi_nairobi.people WHERE id = var_person_id;
-        SELECT username INTO var_person_username FROM asi_nairobi.people WHERE id = var_person_id;
-        IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = var_person_username) THEN
-            IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE email = var_person_email) THEN
-                IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE guid = (SELECT guid FROM asi_nairobi.people WHERE id = var_person_id)) THEN
-                    -- No conflicts, insert person
-                    INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
-                        is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                        birthdate, guid, delta, source_installation)
-                        SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
-                            status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
-                            FROM asi_nairobi.people WHERE id = var_person_id;
-                    -- Tracking
-                    INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
-                ELSE
-                    SET conflict_counter = conflict_counter + 1;
-                    INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'guid', var_person_id, NOW());
-                END IF;
-            ELSE
-                SET conflict_counter = conflict_counter + 1;
-                INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'email', var_person_id, NOW());
-                -- Email conflicts resolution
-                IF var_person_id != 549 THEN
-                    -- The other two, delete their ASI a/cs
-                    DELETE FROM commonservices_production.people WHERE email = var_person_email;
-                    -- Then copy over their Nairobi Sizzle a/cs
-                    INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
-                        is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                        birthdate, guid, delta, source_installation)
-                        SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
-                            status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
-                            FROM asi_nairobi.people WHERE id = var_person_id;
-                    -- Tracking
-                    INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
-                    SET resolved_conflicts = resolved_conflicts + 1;
-                END IF;
-            END IF;
-        ELSE
-            SET conflict_counter = conflict_counter + 1;
-            INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'username', var_person_id, NOW());
-            -- Usernames conflict resolution
-            IF EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = CONCAT(var_person_username, '_nairobi')) THEN
-                SET var_person_username = CONCAT(var_person_username, '_nairobi1');
-            ELSE
-                SET var_person_username = CONCAT(var_person_username, '_nairobi');
-            END IF;
-            INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
-                is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                birthdate, guid, delta, source_installation)
-                SELECT var_person_username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
-                    status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
-                    FROM asi_nairobi.people WHERE id = var_person_id;
-            -- Tracking
-            INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
-            SET resolved_conflicts = resolved_conflicts + 1;
-        END IF;
+        -- For later, the emails to send notifications
+        INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'email', var_person_email, NOW());
+        -- Delete
+        -- DELETE FROM asi_nairobi.people WHERE id = var_person_id;
         -- Increment loop counter
         SET current_row = current_row + 1;
     -- End loop
-    END LOOP the_loop;
+    END LOOP email_conflicts_loop;
 
+    SET current_row = 0;
+    SET num_rows = 0;
+
+    -- Open username conflicts cursor
+    OPEN username_conflicts_cursor;
+    SELECT FOUND_ROWS() INTO num_rows;
+    SELECT num_rows, "username conflicts found, resolving...";
+    -- Start loop
+    username_conflicts_loop: LOOP
+        -- If no more rows, exit loop
+        IF current_row >= num_rows THEN
+            CLOSE username_conflicts_cursor;
+            LEAVE username_conflicts_loop;
+        END IF;
+        -- Fetch person id
+        FETCH username_conflicts_cursor INTO var_person_id, var_person_username, var_person_email;
+        -- Usernames conflict resolution
+        IF EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = CONCAT(var_person_username, '_nairobi')) THEN
+            SET var_person_username = CONCAT(var_person_username, '_nairobi1');
+        ELSE
+            SET var_person_username = CONCAT(var_person_username, '_nairobi');
+        END IF;
+        UPDATE asi_nairobi.people SET username = var_person_username WHERE id = var_person_id;
+--        INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
+--            is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
+--            birthdate, guid, delta, source_installation)
+--            SELECT var_person_username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
+--                status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
+--                FROM asi_nairobi.people WHERE id = var_person_id;
+--        -- Tracking
+--        INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
+        -- For later, the emails to send notifications
+        INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'username', var_person_email, NOW());
+        -- Delete
+        -- DELETE FROM asi_nairobi.people WHERE id = var_person_id;
+        -- Increment loop counter
+        SET current_row = current_row + 1;
+    -- End loop
+    END LOOP username_conflicts_loop;
+
+    SET current_row = 0;
+    SET num_rows = 0;
 
     -- Open people cursor
     OPEN people_cursor;
     SELECT FOUND_ROWS() INTO num_rows;
+    SELECT num_rows, "people, merging...";
     -- Start loop
     the_loop: LOOP
         -- If no more rows, exit loop
@@ -152,72 +140,21 @@ BEGIN
         END IF;
         -- Fetch person id
         FETCH people_cursor INTO var_person_id;
-        -- Check for and log any person conflicts
-        SELECT email INTO var_person_email FROM asi_nairobi.people WHERE id = var_person_id;
-        SELECT username INTO var_person_username FROM asi_nairobi.people WHERE id = var_person_id;
-        IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = var_person_username) THEN
-            IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE email = var_person_email) THEN
-                IF NOT EXISTS (SELECT 1 FROM commonservices_production.people WHERE guid = (SELECT guid FROM asi_nairobi.people WHERE id = var_person_id)) THEN
-                    -- No conflicts, insert person
-                    INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
-                        is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                        birthdate, guid, delta, source_installation)
-                        SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
-                            status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
-                            FROM asi_nairobi.people WHERE id = var_person_id;
-                    -- Tracking
-                    INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
-                ELSE 
-                    SET conflict_counter = conflict_counter + 1;
-                    INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'guid', var_person_id, NOW());
-                END IF;
-            ELSE
-                SET conflict_counter = conflict_counter + 1;
-                INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'email', var_person_id, NOW());
-                -- Email conflicts resolution
-                IF var_person_id != 549 THEN
-                    -- The other two, delete their ASI a/cs
-                    DELETE FROM commonservices_production.people WHERE email = var_person_email;
-                    -- Then copy over their Nairobi Sizzle a/cs
-                    INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
-                        is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                        birthdate, guid, delta, source_installation)
-                        SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
-                            status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
-                            FROM asi_nairobi.people WHERE id = var_person_id;
-                    -- Tracking
-                    INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
-                    SET resolved_conflicts = resolved_conflicts + 1;
-                END IF;
-            END IF;
-        ELSE
-            SET conflict_counter = conflict_counter + 1;
-            INSERT INTO commonservices_production.merge_conflicts (the_table, the_field, the_id, logged_at) VALUES ('people', 'username', var_person_id, NOW());
-            -- Usernames conflict resolution
-            IF EXISTS (SELECT 1 FROM commonservices_production.people WHERE username = CONCAT(var_person_username, '_nairobi')) THEN
-                SET var_person_username = CONCAT(var_person_username, '_nairobi1');
-            ELSE
-                SET var_person_username = CONCAT(var_person_username, '_nairobi');
-            END IF;
-            INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
-                is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
-                birthdate, guid, delta, source_installation)
-                SELECT var_person_username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
-                    status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
-                    FROM asi_nairobi.people WHERE id = var_person_id;
-            -- Tracking
-            INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
-            SET resolved_conflicts = resolved_conflicts + 1;
-        END IF;
+        -- No conflicts, already resolved, insert person
+        INSERT INTO commonservices_production.people (username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount,
+            is_association, status_message, status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website,
+            birthdate, guid, delta, source_installation)
+            SELECT username, encrypted_password, created_at, updated_at, email, salt, consent, coin_amount, is_association, status_message,
+                status_message_changed, gender, irc_nick, msn_nick, phone_number, description, website, birthdate, guid, delta, 'nairobi'
+                FROM asi_nairobi.people WHERE id = var_person_id;
+        -- Tracking
+        INSERT INTO commonservices_production.merge_tracking (the_table, old_id, new_id, logged_at) VALUES ('people', var_person_id, LAST_INSERT_ID(), NOW());
         -- Increment loop counter
         SET current_row = current_row + 1;
     -- End loop
     END LOOP the_loop;
-    IF conflict_counter = 0 THEN
-        SELECT "People merge completed. No conflicts found";
-    ELSE
-        SELECT "People merge completed.", conflict_counter, "conflicts found", resolved_conflicts, "conflicts resolved", 1, "ignored";
-    END IF;
+    -- End
+    SELECT "People merge completed";
 END $$
 
 
@@ -225,7 +162,7 @@ END $$
 -- ************************************clients***********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.clients_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.clients_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.clients_merge()
 BEGIN
     -- Declare variables
     DECLARE var_client_id VARCHAR(255);
@@ -279,7 +216,7 @@ END $$
 -- ************************************collections*******************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.collections_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.collections_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.collections_merge()
 BEGIN
     -- Declare variables
     DECLARE var_collection_id VARCHAR(255);
@@ -333,7 +270,7 @@ END $$
 -- ************************************roles*************************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.roles_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.roles_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.roles_merge()
 BEGIN
     -- Declare variables
     DECLARE var_role_id INT;
@@ -385,7 +322,7 @@ END $$
 -- ************************************user_subscriptions************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.user_subscriptions_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.user_subscriptions_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.user_subscriptions_merge()
 BEGIN
     -- Declare variables
     DECLARE var_user_subscription_id INT;
@@ -427,7 +364,7 @@ END $$
 -- ************************************sessions**********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.sessions_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.sessions_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.sessions_merge()
 BEGIN
     -- Declare variables
     DECLARE var_session_id INT;
@@ -469,7 +406,7 @@ END $$
 -- ************************************person_names******************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.person_names_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.person_names_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.person_names_merge()
 BEGIN
     -- Declare variables
     DECLARE var_person_names_id INT;
@@ -510,7 +447,7 @@ END $$
 -- ************************************memberships*******************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.memberships_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.memberships_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.memberships_merge()
 BEGIN
     -- Declare variables
     DECLARE var_membership_id INT;
@@ -553,7 +490,7 @@ END $$
 -- ************************************groups************************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.groups_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.groups_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.groups_merge()
 BEGIN
     -- Declare variables
     DECLARE var_group_id VARCHAR(255);
@@ -604,7 +541,7 @@ END $$
 -- ************************************channels**********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.channels_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.channels_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.channels_merge()
 BEGIN
     -- Declare variables
     DECLARE var_channel_id INT;
@@ -658,7 +595,7 @@ END $$
 -- ************************************messages**********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.messages_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.messages_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.messages_merge()
 BEGIN
     -- Declare variables
     DECLARE var_message_id INT;
@@ -733,7 +670,7 @@ END $$
 -- ************************************addresses*********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.addresses_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.addresses_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.addresses_merge()
 BEGIN
     -- Declare variables
     DECLARE var_address_id INT;
@@ -774,7 +711,7 @@ END $$
 -- ************************************conditions********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.conditions_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.conditions_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.conditions_merge()
 BEGIN
     -- Declare variables
     DECLARE var_condition_id VARCHAR(255);
@@ -824,7 +761,7 @@ END $$
 -- ************************************connections*******************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.connections_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.connections_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.connections_merge()
 BEGIN
     -- Declare variables
     DECLARE var_connection_id INT;
@@ -857,6 +794,14 @@ BEGIN
         SET current_row = current_row + 1;
     -- End loop
     END LOOP the_loop;
+    -- Resolve duplicates
+    SELECT "Resolving duplicate connections...";
+    DELETE FROM commonservices_production.connections
+        USING commonservices_production.connections, commonservices_production.connections as vtable
+        WHERE (commonservices_production.connections.id > vtable.id)
+            AND (commonservices_production.connections.person_id = vtable.person_id)
+            AND (commonservices_production.connections.contact_id = vtable.contact_id)
+            AND (commonservices_production.connections.status = vtable.status);
     -- End
     SELECT "Connections merge completed";
 END $$
@@ -866,7 +811,7 @@ END $$
 -- ************************************feedbacks********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.feedbacks_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.feedbacks_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.feedbacks_merge()
 BEGIN
     -- Declare variables
     DECLARE var_feedback_id INT;
@@ -906,7 +851,7 @@ END $$
 -- ************************************group_search_handles********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.group_search_handles_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.group_search_handles_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.group_search_handles_merge()
 BEGIN
     -- Declare variables
     DECLARE var_group_search_handle_id INT;
@@ -947,7 +892,7 @@ END $$
 -- ************************************group_subscriptions********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.group_subscriptions_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.group_subscriptions_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.group_subscriptions_merge()
 BEGIN
     -- Declare variables
     DECLARE var_group_subscription_id INT;
@@ -989,7 +934,7 @@ END $$
 -- ************************************locations**********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.locations_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.locations_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.locations_merge()
 BEGIN
     -- Declare variables
     DECLARE var_location_id INT;
@@ -1030,7 +975,7 @@ END $$
 -- ************************************images**********************************
 -- ******************************************************************************
 DROP PROCEDURE IF EXISTS commonservices_production.images_merge $$
-CREATE DEFINER=root@localhost PROCEDURE commonservices_production.images_merge()
+CREATE DEFINER=merger@localhost PROCEDURE commonservices_production.images_merge()
 BEGIN
     -- Declare variables
     DECLARE var_image_id VARCHAR(255);
