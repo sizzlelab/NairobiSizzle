@@ -40,7 +40,7 @@ class LoginController extends Zend_Controller_Action {
                 'controller' => 'login',
                 'action'     => 'index'
             ), null, true));
-            //unset($userIdNamespace->change_id);
+            $userIdNamespace->unsetAll();
             Zend_Session::namespaceUnset('userIdNamespace');
         // if in remember me table, populate form with credentials
         } elseif ($credentials = $this->sessionHandle->checkRememberMe()) {
